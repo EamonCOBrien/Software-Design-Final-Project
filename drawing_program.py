@@ -16,14 +16,15 @@ class Controller:
 
     def check_distance(self, point):
         if self.model.line_points[-1]:
-            x1 = point[0]
-            y1 = point[1]
-            x2 = self.model.line_points[-1][0]
-            y2 = self.model.line_points[-1][1]
-            distance = np.sqrt((x2-x1)**2 + (y2-y1)**2)
-            return distance
-        else:
-            return 0
+            if self.model.line_points[-1]:
+                x1 = point[0]
+                y1 = point[1]
+                x2 = self.model.line_points[-1][0]
+                y2 = self.model.line_points[-1][1]
+                distance = np.sqrt((x2-x1)**2 + (y2-y1)**2)
+                return distance
+            else:
+                return 0
 
 
     def detect_wand(self, frame):
