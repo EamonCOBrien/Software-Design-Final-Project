@@ -56,6 +56,32 @@ class Controller:
             else:
                 return False
 
+    def calibration(self, color):
+        """
+        A separate loop that runs before the main loop. Shows the feed from the camera,
+        waits a few seconds, then grabs the color from teh center of the screen and returns it.
+        """
+        start = time.time()
+        calibration_time = 6
+        while True:
+            elapsed_time = time.time() - start
+            ret, frame = self.model.cap.read()
+            frame = cv2.flip(frame,1)
+
+            cv2.putText(frame,'Place '+ color + ' in center:' + str(int(calibration_time - elapsed_time)),(30,20),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
+            cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 50,(255,255,255), thickness = 3)
+            cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
+
+            cv2.imshow('Art!', frame)
+
+            if cv2.waitKey(1) & 0xFF == ord('q') or elapsed_time > calibration_time:
+                kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
+                frame = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
+                frame = cv2.GaussianBlur(frame, (17, 17), 0)
+                hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+                pixel = hsv_frame[int(frame.shape[0]/2), int(frame.shape[1]/2)] # grab the pixel from the center of the calibration circle
+                return (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
+
 class View:
     """
     Class that creates and then draws on the display. Here is where you draw draw_lines
@@ -98,6 +124,7 @@ class View:
         self.model.black.display(frame)
         self.model.exit.display(frame)
         self.model.erase.display(frame)
+        self.model.calibrate.display(frame)
         if self.model.cursor_1:
             cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),8,(0,0,0), thickness = 3)
         if self.model.cursor_2:
@@ -111,11 +138,11 @@ class Model:
     of the drawing tool, and things like whether the program should be quitting. Also,
     the init of the model is where the elements of the interface are created (not displayed)
     """
-    def __init__(self, lower_color_1,upper_color_1,lower_color_2,upper_color_2):
-        self.upper_color_1 = upper_color_1
-        self.lower_color_1 = lower_color_1
-        self.upper_color_2 = upper_color_2
-        self.lower_color_2 = lower_color_2
+    def __init__(self):
+        self.upper_color_1 = 0
+        self.lower_color_1 = 0
+        self.upper_color_2 = 0
+        self.lower_color_2 = 0
         self.cap = cv2.VideoCapture(0)
         self.current_path = os.path.dirname(__file__)
         self.line_points = []
@@ -124,7 +151,7 @@ class Model:
         self.cursor_thickness = 5
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0)}
         self.line_color = 'black'
-        self.tool = 'draw'
+        self.tool = 'calibrate'
         self.save = Save_Button(20,20,'Save.png',50,self)
         self.clear = Clear_Button(90,20,'Clear.png',50, self)
         self.erase = Erase_Button(160,20,'Erase.png',50, self)
@@ -132,7 +159,9 @@ class Model:
         self.blue = Color_Button(300,20,'Blue.png',50, self,'blue')
         self.green = Color_Button(370,20,'Green.png',50, self,'green')
         self.black = Color_Button(440,20,'Black.png',50, self,'black')
-        self.exit = Exit_Button(510,20,'Exit.png',50, self)
+        self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
+        self.exit = Exit_Button(580,20,'Exit.png',50, self)
+
 
     def check_buttons(self, cursor):
         """
@@ -147,41 +176,19 @@ class Model:
         self.black.check_pressed(cursor)
         self.exit.check_pressed(cursor)
         self.erase.check_pressed(cursor)
+        self.calibrate.check_pressed(cursor)
 
-def calibration(color):
-    """
-    A separate loop that runs before the main loop. Shows the feed from the camera,
-    waits a few seconds, then grabs the color from teh center of the screen and returns it.
-    """
-    start = time.time()
-    calibration_time = 6
-    cap = cv2.VideoCapture(0)
-    while True:
-        elapsed_time = time.time() - start
-        ret, frame = cap.read()
-        frame = cv2.flip(frame,1)
-
-        cv2.putText(frame,'Place '+ color + ' in center:' + str(int(calibration_time - elapsed_time)),(30,20),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
-        cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 50,(255,255,255), thickness = 3)
-        cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
-
-        cv2.imshow('Art!', frame)
-
-        if cv2.waitKey(1) & 0xFF == ord('q') or elapsed_time > calibration_time:
-            kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
-            frame = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
-            frame = cv2.GaussianBlur(frame, (17, 17), 0)
-            hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-            pixel = hsv_frame[int(frame.shape[0]/2), int(frame.shape[1]/2)] # grab the pixel from the center of the calibration circle
-            return (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
-
-def main_loop(lower_color_1,upper_color_1,lower_color_2,upper_color_2):
-    model = Model(lower_color_1,upper_color_1,lower_color_2,upper_color_2)
+def main_loop():
+    model = Model()
     view = View(model)
     controller = Controller(model)
     while True:
         ret, frame = model.cap.read()
         frame = cv2.flip(frame,1)
+        if model.tool == 'calibrate':
+            model.lower_color_1, model.upper_color_1 = controller.calibration("green circle")
+            model.lower_color_2, model.upper_color_2 = controller.calibration("blue circle")
+            model.tool = 'draw'
         model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
         model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
         if model.tool == 'draw':
@@ -201,6 +208,4 @@ def main_loop(lower_color_1,upper_color_1,lower_color_2,upper_color_2):
             break
 
 if __name__ == '__main__':
-    lower_color_1, upper_color_1 = calibration("green circle")
-    lower_color_2, upper_color_2 = calibration("blue circle")
-    main_loop(lower_color_1,upper_color_1,lower_color_2,upper_color_2)
+    main_loop()

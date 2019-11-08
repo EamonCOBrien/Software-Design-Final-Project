@@ -90,3 +90,10 @@ class Erase_Button(Button):
     """
     def press(self):
         self.model.tool = 'erase'
+
+class Calibration_Button(Button):
+    """
+    A class to add the ability to recalibrate while the program is running
+    """
+    def press(self):
+        self.model.tool = 'calibrate'
