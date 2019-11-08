@@ -27,7 +27,7 @@ class Controller:
                 return 0
 
 
-    def detect_wand(self, frame):
+    def detect_wand(self, frame, lower, upper):
         """
         Looks at the current frame, finds the largest contour of the target color,
         and returns its center
@@ -36,7 +36,7 @@ class Controller:
         blurred = cv2.GaussianBlur(frame, (17, 17), 0)
         blurred = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv_frame, lower_color_1, upper_color_1)
+        mask = cv2.inRange(hsv_frame, lower, upper)
         contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = imutils.grab_contours(contours)
         center = None
@@ -77,9 +77,9 @@ class View:
         return frame
 
     def remove_lines(self,frame):
-        if self.model.cursor and self.model.line_points:
-            eraser_range_x = [i for i in range(int(self.model.cursor[0])-5, int(self.model.cursor[0])+6)]
-            eraser_range_y = [i for i in range(int(self.model.cursor[1])-5, int(self.model.cursor[1])+6)]
+        if self.model.cursor_1 and self.model.line_points:
+            eraser_range_x = [i for i in range(int(self.model.cursor_1[0])-5, int(self.model.cursor_1[0])+6)]
+            eraser_range_y = [i for i in range(int(self.model.cursor_1[1])-5, int(self.model.cursor_1[1])+6)]
             for i in range(len(self.model.line_points)):
                 if self.model.line_points[i]:
                     if self.model.line_points[i][0] in eraser_range_x and self.model.line_points[i][1] in eraser_range_y:
@@ -98,8 +98,10 @@ class View:
         self.model.black.display(frame)
         self.model.exit.display(frame)
         self.model.erase.display(frame)
-        if self.model.cursor:
-            cv2.circle(frame, ((self.model.cursor[0]),(self.model.cursor[1])),8,(0,0,0), thickness = 3)
+        if self.model.cursor_1:
+            cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),8,(0,0,0), thickness = 3)
+        if self.model.cursor_2:
+            cv2.circle(frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),8,(0,0,0), thickness = 2)
 
         cv2.imshow('Art!', frame)
 
@@ -117,7 +119,8 @@ class Model:
         self.cap = cv2.VideoCapture(0)
         self.current_path = os.path.dirname(__file__)
         self.line_points = []
-        self.cursor = ()
+        self.cursor_1 = ()
+        self.cursor_2 = ()
         self.cursor_thickness = 5
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0)}
         self.line_color = 'black'
@@ -179,13 +182,14 @@ def main_loop(lower_color_1,upper_color_1,lower_color_2,upper_color_2):
     while True:
         ret, frame = model.cap.read()
         frame = cv2.flip(frame,1)
-        model.cursor = controller.detect_wand(frame)
+        model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
+        model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
         if model.tool == 'draw':
-            model.line_points.append(model.cursor)
+            model.line_points.append(model.cursor_1)
         if model.tool == 'erase':
             view.remove_lines(frame)
 
-        model.check_buttons(model.cursor)
+        model.check_buttons(model.cursor_2)
 
         frame = view.show_lines(frame)
 
