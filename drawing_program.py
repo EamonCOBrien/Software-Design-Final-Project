@@ -36,7 +36,7 @@ class Controller:
         blurred = cv2.GaussianBlur(frame, (17, 17), 0)
         blurred = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
         hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask = cv2.inRange(hsv_frame, lower_color, upper_color)
+        mask = cv2.inRange(hsv_frame, lower_color_1, upper_color_1)
         contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = imutils.grab_contours(contours)
         center = None
@@ -72,8 +72,8 @@ class View:
         """
         for i in range(len(self.model.line_points)):
             if i > 0 and self.model.line_points[i-1] and self.model.line_points[i]: # make sure both endpoints exist
-                if self.model.line_points[i][3] < 50: # check the velocity of the target to filter out false positives
-                    cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], 5)
+                if self.model.line_points[i][3] < 100: # check the velocity of the target to filter out false positives
+                    cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], self.model.cursor_thickness)
         return frame
 
     def remove_lines(self,frame):
@@ -109,13 +109,16 @@ class Model:
     of the drawing tool, and things like whether the program should be quitting. Also,
     the init of the model is where the elements of the interface are created (not displayed)
     """
-    def __init__(self, upper_color,lower_color):
-        self.upper_color = upper_color
-        self.lower_color = lower_color
+    def __init__(self, lower_color_1,upper_color_1,lower_color_2,upper_color_2):
+        self.upper_color_1 = upper_color_1
+        self.lower_color_1 = lower_color_1
+        self.upper_color_2 = upper_color_2
+        self.lower_color_2 = lower_color_2
         self.cap = cv2.VideoCapture(0)
         self.current_path = os.path.dirname(__file__)
         self.line_points = []
         self.cursor = ()
+        self.cursor_thickness = 5
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0)}
         self.line_color = 'black'
         self.tool = 'draw'
@@ -142,7 +145,7 @@ class Model:
         self.exit.check_pressed(cursor)
         self.erase.check_pressed(cursor)
 
-def calibration():
+def calibration(color):
     """
     A separate loop that runs before the main loop. Shows the feed from the camera,
     waits a few seconds, then grabs the color from teh center of the screen and returns it.
@@ -155,7 +158,7 @@ def calibration():
         ret, frame = cap.read()
         frame = cv2.flip(frame,1)
 
-        cv2.putText(frame,'Place Target in Circle: ' + str(int(calibration_time - elapsed_time)),(30,20),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
+        cv2.putText(frame,'Place '+ color + ' in center:' + str(int(calibration_time - elapsed_time)),(30,20),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
         cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 50,(255,255,255), thickness = 3)
         cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
 
@@ -169,8 +172,8 @@ def calibration():
             pixel = hsv_frame[int(frame.shape[0]/2), int(frame.shape[1]/2)] # grab the pixel from the center of the calibration circle
             return (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
 
-def main_loop(lower_color,upper_color):
-    model = Model(upper_color,lower_color)
+def main_loop(lower_color_1,upper_color_1,lower_color_2,upper_color_2):
+    model = Model(lower_color_1,upper_color_1,lower_color_2,upper_color_2)
     view = View(model)
     controller = Controller(model)
     while True:
@@ -194,5 +197,6 @@ def main_loop(lower_color,upper_color):
             break
 
 if __name__ == '__main__':
-    lower_color, upper_color = calibration()
-    main_loop(lower_color,upper_color)
+    lower_color_1, upper_color_1 = calibration("green circle")
+    lower_color_2, upper_color_2 = calibration("blue circle")
+    main_loop(lower_color_1,upper_color_1,lower_color_2,upper_color_2)
