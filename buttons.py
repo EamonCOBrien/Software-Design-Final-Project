@@ -96,4 +96,5 @@ class Calibration_Button(Button):
     A class to add the ability to recalibrate while the program is running
     """
     def press(self):
-        self.model.tool = 'calibrate'
+        self.model.lower_color_1, self.model.upper_color_1 = self.model.calibration("green circle")
+        self.model.lower_color_2, self.model.upper_color_2 = self.model.calibration("blue circle")
