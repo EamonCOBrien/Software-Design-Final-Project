@@ -191,6 +191,14 @@ def main_loop():
             model.line_points.append(model.cursor_1)
         if model.tool == 'erase':
             view.remove_lines(frame)
+        if model.tool == 'rectangle':
+
+            cv2.rectangle(frame)
+                if cursor_1:
+                    cv2.rectangle
+                else:
+                    model.line_points.append(rectangle points)
+                    model.tool == 'draw'
 
         model.check_buttons(model.cursor_2)
 

@@ -16,7 +16,7 @@ class Button:
         self.path = path
         self.pressed = pressed
         self.model = model
-        self.icon = cv2.imread(os.path.dirname(__file__) + '/' + path, -1)
+        self.icon = cv2.imread(os.path.dirname(__file__) + '/Icons/' + path, -1)
 
     def check_pressed(self,cursor):
         if cursor:

@@ -1,8 +1,5 @@
 Potential Future Features
 
-other side for buttons
-physical wand
-raster erase
 line erase
 rectangle
 color wheel
@@ -10,8 +7,6 @@ thickness
 thickness dropdown
 optimize for other cameras
 package
-better looking buttons
 web app
-multiple saves
 saves without background
 prettier screen
