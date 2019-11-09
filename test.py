@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, Response
-from camera_opencv import Camera
+from opencv_camera import Camera
+import cv2
 
 app = Flask(__name__)
 
@@ -19,10 +20,11 @@ def rules():
 def draw():
    return render_template('stream.html')
 
-def gen(camera):
+def gen(camera): # i think this is where we would run all of our original code
  """Video streaming generator function."""
  while True:
-     frame = camera.get_frame()
+     frame = camera.get_frame() #this is the frame we would draw on
+     # unfortunately, it is stored as bytes, and i don't know how to work with that
      yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
