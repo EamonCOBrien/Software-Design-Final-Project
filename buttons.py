@@ -98,3 +98,8 @@ class Calibration_Button(Button):
     def press(self):
         self.model.lower_color_1, self.model.upper_color_1 = self.model.calibration("green circle")
         self.model.lower_color_2, self.model.upper_color_2 = self.model.calibration("blue circle")
+
+class Shape_Button(Button):
+    def press(self):
+        #self.model.tool = 'rectangle'
+        pass

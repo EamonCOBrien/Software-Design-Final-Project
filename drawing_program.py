@@ -25,6 +25,7 @@ class Model:
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0)}
         self.line_color = 'black'
         self.tool = 'draw'
+        self.shape_started = False
         self.save = Save_Button(20,20,'Save.png',50,self)
         self.clear = Clear_Button(90,20,'Clear.png',50, self)
         self.erase = Erase_Button(160,20,'Erase.png',50, self)
@@ -33,7 +34,8 @@ class Model:
         self.green = Color_Button(370,20,'Green.png',50, self,'green')
         self.black = Color_Button(440,20,'Black.png',50, self,'black')
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
-        self.exit = Exit_Button(580,20,'Exit.png',50, self)
+        self.shape = Shape_Button(580,20,'Shape.png',50, self)
+        self.exit = Exit_Button(650,20,'Exit.png',50, self)
 
 
     def check_buttons(self, cursor):
@@ -50,6 +52,7 @@ class Model:
         self.exit.check_pressed(cursor)
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
+        self.shape.check_pressed(cursor)
 
     def calibration(self, color):
         """
@@ -170,6 +173,7 @@ class View:
         self.model.exit.display(frame)
         self.model.erase.display(frame)
         self.model.calibrate.display(frame)
+        self.model.shape.display(frame)
         if self.model.cursor_1:
             cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),8,(0,0,0), thickness = 3)
         if self.model.cursor_2:
@@ -192,13 +196,14 @@ def main_loop():
         if model.tool == 'erase':
             view.remove_lines(frame)
         if model.tool == 'rectangle':
-
-            cv2.rectangle(frame)
-                if cursor_1:
-                    cv2.rectangle
-                else:
-                    model.line_points.append(rectangle points)
-                    model.tool == 'draw'
+            if not shape_started and model.cursor_1:
+                model.shape_started = True
+                model.shape_point_1 = (model.cursor_1[0]-1, model.cursor_1[1]-1)
+            if cursor_1 and shape_started:
+                cv2.rectangle(frame, )
+            if shape_started and cursor_2:
+                model.line_points.append(rectangle points)
+                model.tool == 'draw'
 
         model.check_buttons(model.cursor_2)
 
