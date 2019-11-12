@@ -178,8 +178,8 @@ def process_frame(frame, model, controller, view):
             model.lower_color_2, model.upper_color_2 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
             model.tool = 'draw'
     if model.tool != 'calibrate':
-            model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
-            model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
+        model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
+        model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
         if model.tool == 'draw':
             model.line_points.append(model.cursor_1)
         if model.tool == 'erase':
