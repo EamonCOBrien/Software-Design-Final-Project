@@ -1,1 +1,2 @@
 Flask
+/home/parallels/anaconda3/lib/python3.7/site-packages/opencv-python
