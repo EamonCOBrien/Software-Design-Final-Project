@@ -1,9 +1,9 @@
-import cv2
 import numpy as np
 import time
 import imutils
 import os
 from buttons import *
+import cv2
 
 class Model:
     """

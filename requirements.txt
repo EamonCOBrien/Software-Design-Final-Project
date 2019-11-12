@@ -1,4 +1,1 @@
 Flask
-cv2
-time
-numpy

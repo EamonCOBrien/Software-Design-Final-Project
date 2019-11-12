@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, Response
 from opencv_camera import Camera
-import cv2
 import time
 import numpy as np
 from mini_project_4 import Model, Controller, View, process_frame
+import cv2
 
 app = Flask(__name__)
 
