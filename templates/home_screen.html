@@ -5,13 +5,28 @@ at the home URL.-->
 <html>
     <head>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <style>
+      .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(0%, 0%);
+      }
+      .header-bg {
+        width:100%;
+        height:200px;
+        background: url("https://images4.alphacoders.com/795/thumb-1920-79578.png");
+        background-size:cover;
+      }
+
+      </style>
         <title>
             Home Page
         </title>
     </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">Put Wand logo here</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -19,7 +34,7 @@ at the home URL.-->
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="/intro">Introduction</a>
@@ -34,16 +49,26 @@ at the home URL.-->
   </div>
 </nav>
 
-<div class="container" text-justify>
-  <body>
-  <div style="background-color:lightblue">
-    <br>
-    <br>
-    <h2 class="text-center">[Insert Project Name Here]</h2>
-    <br>
-    <br>
+<div class="header-bg">
+  <!-- <div style="background-color:lightblue"> -->
+  <!-- <div class="col-sm-3 col-xs-0"> -->
+  <div>
+    <br><br><br>
+    <h1 class="text-center" style="color:white">[Insert Project Name Here]</h1>
+    <br><br>
+  <!-- <div class="container"> -->
+  <!-- <div class="col-sm-12 col-xs-0" style="padding-left: 0px;  padding-right: 0px;"> -->
+    <!-- <img src="https://images4.alphacoders.com/795/thumb-1920-79578.png" class="img-fluid" style="width:100%;height:180px"> -->
+    <!-- <div class="centered" style="color:white"><h1>[Insert Project Name Here]</h1></div> -->
+  <!-- <a href="#"><img class="image-responsive img-rounded" alt="B-Flight" src="https://images4.alphacoders.com/795/thumb-1920-79578.png" id="banner" /></a> -->
   </div>
-  <div class="row m-5 border">
+</div>
+
+  <!-- <div class="col-sm-3 col-xs-0"></div> -->
+<div>
+  <body>
+  <div class="container" text-justify class="row m-5 border">
+    <br><br>
     <div class="col-15">
       <h4 style="color:blue" class="text-center">Project Blurb</h4>
       <p class="text-center"> Write blurb paragraph here: dddddddd ddddd ddddddddddd ddddd d ddddddddd dddddddd ddddddddddd dddddddddddd dddddddd ddddddddddd dddddddd dddddddd ddddd dddddd ddddddddddd dddddddd dddddddd ddddd dddddd </p>
