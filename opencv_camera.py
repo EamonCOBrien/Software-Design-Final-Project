@@ -121,7 +121,4 @@ class Camera(object):
         while True:
             # read current frame
             _, img = camera.read()
-            img = cv2.flip(img,1) # it would be possible to do all of our processing here
-
-            # encode as a jpeg image and return it
             yield cv2.imencode('.jpg', img)[1].tobytes()
