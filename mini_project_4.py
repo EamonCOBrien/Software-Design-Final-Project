@@ -158,10 +158,12 @@ class View:
             self.model.thin.display(frame)
             self.model.medium.display(frame)
             self.model.thick.display(frame)
+            return frame
         if self.model.tool == 'eraser_thickness':
             self.model.eraser_thin.display(frame)
             self.model.eraser_medium.display(frame)
             self.model.eraser_thick.display(frame)
+            return frame
         self.model.save.display(frame)
         self.model.clear.display(frame)
         self.model.red.display(frame)
