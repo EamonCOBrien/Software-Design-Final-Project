@@ -24,7 +24,7 @@ class Model:
         self.cursor_1 = ()
         self.cursor_2 = ()
         self.pen_size = 5
-        self.eraser_size = self.pen_size + 1 #6
+        self.eraser_size = 5
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
         self.line_color = 'black'
         self.tool = 'calibrate'
@@ -136,8 +136,8 @@ class View:
 
     def remove_lines(self,frame):
         if self.model.cursor_1 and self.model.line_points:
-            eraser_range_x = [i for i in range(int(self.model.cursor_1[0])-5, int(self.model.cursor_1[0])+self.model.eraser_size)]
-            eraser_range_y = [i for i in range(int(self.model.cursor_1[1])-5, int(self.model.cursor_1[1])+self.model.eraser_size)]
+            eraser_range_x = [i for i in range(int(self.model.cursor_1[0])-self.model.eraser_size, int(self.model.cursor_1[0])+self.model.eraser_size)]
+            eraser_range_y = [i for i in range(int(self.model.cursor_1[1])-self.model.eraser_size, int(self.model.cursor_1[1])+self.model.eraser_size)]
             for i in range(len(self.model.line_points)):
                 if self.model.line_points[i]:
                     if self.model.line_points[i][0] in eraser_range_x and self.model.line_points[i][1] in eraser_range_y:
@@ -148,6 +148,12 @@ class View:
         """
         Calls the display function of all the buttons.
         """
+        if self.model.tool == 'thickness':
+            kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
+            frame = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
+            self.model.thin.display(frame)
+            self.model.medium.display(frame)
+            self.model.thick.display(frame)
         self.model.save.display(frame)
         self.model.clear.display(frame)
         self.model.red.display(frame)
@@ -158,16 +164,11 @@ class View:
         self.model.erase.display(frame)
         self.model.calibrate.display(frame)
         self.model.shape.display(frame)
-        if self.model.tool == 'thickness':
-            #blur current page?
-            self.model.thin.display(frame)
-            self.model.medium.display(frame)
-            self.model.thick.display(frame)
 #TODO: #if line color/eraser buttons are pressed, apply opaque mask, show line thickness buttons -------------------------
         if self.model.cursor_1: #drawing cursor
-            cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),8,self.model.line_colors[self.model.line_color], thickness = 3)
+            cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 3)
         if self.model.cursor_2: #selecting cursor
-            cv2.circle(frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),8,self.model.line_colors[self.model.line_color], thickness = 2)
+            cv2.circle(frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
         return frame
 
 #TODO: fix calibration so that it doesn't ask for green side twice.
