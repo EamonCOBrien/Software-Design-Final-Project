@@ -56,12 +56,12 @@ class Model:
             self.thin.check_pressed(cursor)
             self.medium.check_pressed(cursor)
             self.thick.check_pressed(cursor)
-            break
+            return
         if self.tool == 'thickness2':
             self.thinE.check_pressed(cursor)
             self.mediumE.check_pressed(cursor)
             self.thickE.check_pressed(cursor)
-            break
+            return
         self.clear.check_pressed(cursor)
         self.save.check_pressed(cursor)
         self.red.check_pressed(cursor)
@@ -163,7 +163,7 @@ class View:
             self.model.thin.display(frame)
             self.model.medium.display(frame)
             self.model.thick.display(frame)
-            break
+            return
         self.model.save.display(frame)
         self.model.clear.display(frame)
         self.model.red.display(frame)
