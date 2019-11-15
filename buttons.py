@@ -121,11 +121,8 @@ class Thickness_Button(Button):
     """
     def __init__(self,x,y,path,size,model,pen_size):
         super().__init__(x,y,path,size,model)
-        #self.color = color
         self.pen_size = pen_size
 
     def press(self):
-        #if this is clicked, stop drawing(tool=pause?), run if loop checking if pen_size icons were clicked, then run following code
         self.model.tool = 'draw' #if thickness button pressed, start drawing again
-        #self.model.line_color = self.color
         self.model.pen_size = self.pen_size

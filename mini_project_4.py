@@ -131,7 +131,7 @@ class View:
         for i in range(len(self.model.line_points)):
             if i > 0 and self.model.line_points[i-1] and self.model.line_points[i]: # make sure both endpoints exist
                 if self.model.line_points[i][3] < 100: # check the velocity of the target to filter out false positives
-                    cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], self.model.pen_size)
+                    cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], self.model.line_points[i][-1])
         return frame
 
     def remove_lines(self,frame):
