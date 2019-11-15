@@ -202,15 +202,6 @@ def main_loop():
     while True:
         ret, frame = cap.read() # get a frame from the camera
         frame = process_frame(frame, model,controller,view)
-        #if model.tool == 'rectangle':
-            #if not shape_started and model.cursor_1:
-                #model.shape_started = True
-                #model.shape_point_1 = (model.cursor_1[0]-1, model.cursor_1[1]-1)
-            #if cursor_1 and shape_started:
-                #cv2.rectangle(frame, )
-            #if shape_started and cursor_2:
-                #model.line_points.append(rectangle points)
-                #model.tool == 'draw'
         cv2.imshow('art!',frame)
         if cv2.waitKey(1) & 0xFF == ord('q') or model.tool == 'exit':
             cap.release()
