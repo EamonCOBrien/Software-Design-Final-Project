@@ -69,13 +69,15 @@ class Color_Button(Button):
     A class for adding a color button to the program. Inherets from Button class.
     Color buttons change the color of the users drawing.
     """
-    def __init__(self,x,y,path,size,model,color):
+    def __init__(self,x,y,path,size,model,color,pen_size):
         super().__init__(x,y,path,size,model)
         self.color = color
+        self.pen_size = pen_size
 
     def press(self):
-        self.model.tool = 'draw'
+        self.model.tool = 'thickness' #if color button is selected, change mode to thickness, line buttons will appear
         self.model.line_color = self.color
+        self.model.pen_size = self.pen_size
 
 class Exit_Button(Button):
     """
@@ -89,8 +91,15 @@ class Erase_Button(Button):
     """
     A class for adding an eraser button to the program.
     """
+    def __init__(self,x,y,path,size,model,color,eraser_size):
+        super().__init__(x,y,path,size,model)
+        self.color = color
+        self.eraser_size = eraser_size
+
     def press(self):
         self.model.tool = 'erase'
+        self.model.line_color = self.color
+        self.model.eraser_size = self.eraser_size
 
 class Calibration_Button(Button):
     """
@@ -106,3 +115,15 @@ class Shape_Button(Button):
     def press(self):
         #self.model.tool = 'rectangle'
         pass
+
+class Thickness_Button(Button):
+    """
+    A class for changing the thickness of the cursor.
+    """
+    def __init__(self,x,y,path,size,model,pen_size):
+        super().__init__(x,y,path,size,model)
+        self.pen_size = pen_size
+
+    def press(self):
+        self.model.tool = 'draw' #if thickness button pressed, start drawing again
+        self.model.pen_size = self.pen_size

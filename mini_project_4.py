@@ -23,20 +23,24 @@ class Model:
         self.line_points = []
         self.cursor_1 = ()
         self.cursor_2 = ()
-        self.cursor_thickness = 5
-        self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0)}
+        self.pen_size = 5
+        self.eraser_size = self.pen_size + 1 #6
+        self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
         self.line_color = 'black'
         self.tool = 'calibrate'
         self.shape_started = False
         self.save = Save_Button(20,20,'Save.png',50,self)
         self.clear = Clear_Button(90,20,'Clear.png',50, self)
-        self.erase = Erase_Button(160,20,'Erase.png',50, self)
-        self.red = Color_Button(230,20,'Red.png',50, self, 'red')
-        self.blue = Color_Button(300,20,'Blue.png',50, self,'blue')
-        self.green = Color_Button(370,20,'Green.png',50, self,'green')
-        self.black = Color_Button(440,20,'Black.png',50, self,'black')
+        self.erase = Erase_Button(160,20,'Erase.png',50, self, 'grey', self.eraser_size)
+        self.red = Color_Button(230,20,'Red.png',50, self, 'red', self.pen_size)
+        self.blue = Color_Button(300,20,'Blue.png',50, self,'blue', self.pen_size)
+        self.green = Color_Button(370,20,'Green.png',50, self,'green', self.pen_size)
+        self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
         self.shape = Shape_Button(580,20,'Shape.png',50, self)
+        self.thin = Thickness_Button(160,250,'Thin.png',50,self,2)
+        self.medium = Thickness_Button(300,250,'Medium.png',50,self,7)
+        self.thick = Thickness_Button(440,250,'Thick.png',50,self,15)
         #self.exit = Exit_Button(650,20,'Exit.png',50, self)
 
 
@@ -55,6 +59,10 @@ class Model:
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
         self.shape.check_pressed(cursor)
+        if self.tool == 'thickness':
+            self.thin.check_pressed(cursor)
+            self.medium.check_pressed(cursor)
+            self.thick.check_pressed(cursor)
 
 class Controller:
     """
@@ -102,7 +110,7 @@ class Controller:
 
             if radius > 30:
                 velocity = self.check_distance(center)
-                return((center[0], center[1],self.model.line_color,velocity))
+                return((center[0], center[1],self.model.line_color, velocity,self.model.pen_size)) #Tuple where line info is stored)
             else:
                 return False
 
@@ -123,13 +131,13 @@ class View:
         for i in range(len(self.model.line_points)):
             if i > 0 and self.model.line_points[i-1] and self.model.line_points[i]: # make sure both endpoints exist
                 if self.model.line_points[i][3] < 100: # check the velocity of the target to filter out false positives
-                    cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], self.model.cursor_thickness)
+                    cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], self.model.line_points[i][-1])
         return frame
 
     def remove_lines(self,frame):
         if self.model.cursor_1 and self.model.line_points:
-            eraser_range_x = [i for i in range(int(self.model.cursor_1[0])-5, int(self.model.cursor_1[0])+6)]
-            eraser_range_y = [i for i in range(int(self.model.cursor_1[1])-5, int(self.model.cursor_1[1])+6)]
+            eraser_range_x = [i for i in range(int(self.model.cursor_1[0])-5, int(self.model.cursor_1[0])+self.model.eraser_size)]
+            eraser_range_y = [i for i in range(int(self.model.cursor_1[1])-5, int(self.model.cursor_1[1])+self.model.eraser_size)]
             for i in range(len(self.model.line_points)):
                 if self.model.line_points[i]:
                     if self.model.line_points[i][0] in eraser_range_x and self.model.line_points[i][1] in eraser_range_y:
@@ -150,12 +158,19 @@ class View:
         self.model.erase.display(frame)
         self.model.calibrate.display(frame)
         self.model.shape.display(frame)
-        if self.model.cursor_1:
-            cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),8,(0,0,0), thickness = 3)
-        if self.model.cursor_2:
-            cv2.circle(frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),8,(0,0,0), thickness = 2)
-
+        if self.model.tool == 'thickness':
+            #blur current page?
+            self.model.thin.display(frame)
+            self.model.medium.display(frame)
+            self.model.thick.display(frame)
+#TODO: #if line color/eraser buttons are pressed, apply opaque mask, show line thickness buttons -------------------------
+        if self.model.cursor_1: #drawing cursor
+            cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),8,self.model.line_colors[self.model.line_color], thickness = 3)
+        if self.model.cursor_2: #selecting cursor
+            cv2.circle(frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),8,self.model.line_colors[self.model.line_color], thickness = 2)
         return frame
+
+#TODO: fix calibration so that it doesn't ask for green side twice.
 
 def process_frame(frame, model, controller, view):
     frame = cv2.flip(frame,1) # reverse the frame so people aren't confused
