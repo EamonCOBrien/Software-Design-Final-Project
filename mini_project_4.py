@@ -24,7 +24,7 @@ class Model:
         self.cursor_1 = ()
         self.cursor_2 = ()
         self.pen_size = 5
-        self.eraser_size = 6 #1 bigger than pen_size
+        self.eraser_size = self.pen_size + 1 #6
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
         self.line_color = 'black'
         self.tool = 'calibrate'
@@ -38,6 +38,9 @@ class Model:
         self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
         self.shape = Shape_Button(580,20,'Shape.png',50, self)
+        self.thin = Thickness_Button(160,250,'Thin.png',50,self,2)
+        self.medium = Thickness_Button(300,250,'Medium.png',50,self,7)
+        self.thick = Thickness_Button(440,250,'Thick.png',50,self,15)
         #self.exit = Exit_Button(650,20,'Exit.png',50, self)
 
 
@@ -56,11 +59,10 @@ class Model:
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
         self.shape.check_pressed(cursor)
-#TODO:
-        #check line thickness check_buttons
-        # self.small.check_pressed(cursor)
-        # self.medium.check_pressed(cursor)
-        # self.large.check_pressed(cursor)
+        if self.tool == 'thickness':
+            self.thin.check_pressed(cursor)
+            self.medium.check_pressed(cursor)
+            self.thick.check_pressed(cursor)
 
 class Controller:
     """
@@ -156,8 +158,12 @@ class View:
         self.model.erase.display(frame)
         self.model.calibrate.display(frame)
         self.model.shape.display(frame)
-#TODO: put everything above in if body given color button not pressed
-        #if line color/eraser buttons are pressed, apply opaque mask, show line thickness buttons -------------------------
+        if self.model.tool == 'thickness':
+            #blur current page?
+            self.model.thin.display(frame)
+            self.model.medium.display(frame)
+            self.model.thick.display(frame)
+#TODO: #if line color/eraser buttons are pressed, apply opaque mask, show line thickness buttons -------------------------
         if self.model.cursor_1: #drawing cursor
             cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),8,self.model.line_colors[self.model.line_color], thickness = 3)
         if self.model.cursor_2: #selecting cursor
