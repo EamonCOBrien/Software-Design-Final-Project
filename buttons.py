@@ -97,7 +97,7 @@ class Erase_Button(Button):
         self.eraser_size = eraser_size
 
     def press(self):
-        self.model.tool = 'thickness2'
+        self.model.tool = 'eraser_thickness'
         self.model.line_color = self.color
         self.model.eraser_size = self.eraser_size
 
