@@ -56,7 +56,7 @@ class Model:
             self.thin.check_pressed(cursor)
             self.medium.check_pressed(cursor)
             self.thick.check_pressed(cursor)
-        if self.tool == 'ereaser_thickness':
+        if self.tool == 'eraser_thickness':
             self.thin_erase.check_pressed(cursor)
             self.medium_erase.check_pressed(cursor)
             self.thick_erase.check_pressed(cursor)
