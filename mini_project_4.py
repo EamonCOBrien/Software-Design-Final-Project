@@ -41,9 +41,9 @@ class Model:
         self.thin = Thickness_Button(160,250,'Thin.png',50,self,2)
         self.medium = Thickness_Button(300,250,'Medium.png',50,self,7)
         self.thick = Thickness_Button(440,250,'Thick.png',50,self,15)
-        self.thinE = Eraser_Thickness_Button(160,250,'Thin.png',50,self,3)
-        self.mediumE = Eraser_Thickness_Button(300,250,'Medium.png',50,self,8)
-        self.thickE = Eraser_Thickness_Button(440,250,'Thick.png',50,self,16)
+        self.eraser_thin = Eraser_Thickness_Button(160,250,'Thin.png',50,self,2)
+        self.eraser_medium = Eraser_Thickness_Button(300,250,'Medium.png',50,self,7)
+        self.eraser_thick = Eraser_Thickness_Button(440,250,'Thick.png',50,self,15)
         #self.exit = Exit_Button(650,20,'Exit.png',50, self)
 
 
@@ -56,12 +56,10 @@ class Model:
             self.thin.check_pressed(cursor)
             self.medium.check_pressed(cursor)
             self.thick.check_pressed(cursor)
-            break
-        if self.tool == 'thickness2':
-            self.thinE.check_pressed(cursor)
-            self.mediumE.check_pressed(cursor)
-            self.thickE.check_pressed(cursor)
-            break
+        if self.tool == 'ereaser_thickness':
+            self.thin_erase.check_pressed(cursor)
+            self.medium_erase.check_pressed(cursor)
+            self.thick_erase.check_pressed(cursor)
         self.clear.check_pressed(cursor)
         self.save.check_pressed(cursor)
         self.red.check_pressed(cursor)
@@ -92,7 +90,6 @@ class Controller:
                 return distance
         else:
             return 0
-
 
     def detect_wand(self, frame, lower, upper):
         """
@@ -158,12 +155,13 @@ class View:
         Calls the display function of all the buttons.
         """
         if self.model.tool == 'thickness':
-            kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
-            frame = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
             self.model.thin.display(frame)
             self.model.medium.display(frame)
             self.model.thick.display(frame)
-            break
+        if self.model.tool == 'eraser_thickness':
+            self.model.eraser_thin.display(frame)
+            self.model.eraser_medium.display(frame)
+            self.model.eraser_thick.display(frame)
         self.model.save.display(frame)
         self.model.clear.display(frame)
         self.model.red.display(frame)
@@ -174,22 +172,20 @@ class View:
         self.model.erase.display(frame)
         self.model.calibrate.display(frame)
         self.model.shape.display(frame)
-#TODO: #if line color/eraser buttons are pressed, apply opaque mask, show line thickness buttons -------------------------
         if self.model.cursor_1: #drawing cursor
-            cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 3)
+            cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
         if self.model.cursor_2: #selecting cursor
             cv2.circle(frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
         return frame
-
-#TODO: fix calibration so that it doesn't ask for green side twice.
 
 def process_frame(frame, model, controller, view):
     frame = cv2.flip(frame,1) # reverse the frame so people aren't confused
     if model.tool == 'calibrate' and model.elapsed_time < model.calibration_time:
         model.elapsed_time = time.time() - model.calibration_start
-        cv2.putText(frame,'Place green in center:' + str(int(model.calibration_time - model.elapsed_time)),(30,20),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
+        cv2.putText(frame,'Place color 1 in center:' + str(int(model.calibration_time - model.elapsed_time)),(30,20),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
         cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 50,(255,255,255), thickness = 3)
         cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
+        return frame
     if model.tool == 'calibrate' and model.elapsed_time > model.calibration_time:
         kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
         frame = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
@@ -203,19 +199,20 @@ def process_frame(frame, model, controller, view):
         elif not model.upper_color_2.any():
             model.lower_color_2, model.upper_color_2 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
             model.tool = 'draw'
-    if model.tool != 'calibrate':
-        model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
-        model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
-        if model.tool == 'draw':
-            model.line_points.append(model.cursor_1)
-        if model.tool == 'erase':
-            view.remove_lines(frame)
+        return frame
 
-        model.check_buttons(model.cursor_2)
+    model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
+    model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
+    if model.tool == 'draw':
+        model.line_points.append(model.cursor_1)
+    if model.tool == 'erase':
+        view.remove_lines(frame)
 
-        frame = view.show_lines(frame)
+    model.check_buttons(model.cursor_2)
 
-        frame = view.show_interface(frame)
+    frame = view.show_lines(frame)
+
+    frame = view.show_interface(frame)
 
     return frame
 
