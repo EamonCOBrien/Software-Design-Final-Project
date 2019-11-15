@@ -23,8 +23,8 @@ class Model:
         self.line_points = []
         self.cursor_1 = ()
         self.cursor_2 = ()
-        self.pen_size = 5
-        self.eraser_size = 5
+        self.pen_size = 7
+        self.eraser_size = 8
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
         self.line_color = 'black'
         self.tool = 'calibrate'
@@ -41,6 +41,9 @@ class Model:
         self.thin = Thickness_Button(160,250,'Thin.png',50,self,2)
         self.medium = Thickness_Button(300,250,'Medium.png',50,self,7)
         self.thick = Thickness_Button(440,250,'Thick.png',50,self,15)
+        self.thinE = Eraser_Thickness_Button(160,250,'Thin.png',50,self,3)
+        self.mediumE = Eraser_Thickness_Button(300,250,'Medium.png',50,self,8)
+        self.thickE = Eraser_Thickness_Button(440,250,'Thick.png',50,self,16)
         #self.exit = Exit_Button(650,20,'Exit.png',50, self)
 
 
@@ -63,6 +66,11 @@ class Model:
             self.thin.check_pressed(cursor)
             self.medium.check_pressed(cursor)
             self.thick.check_pressed(cursor)
+        if self.tool == 'thickness2':
+            self.thinE.check_pressed(cursor)
+            self.mediumE.check_pressed(cursor)
+            self.thickE.check_pressed(cursor)
+
 
 class Controller:
     """
