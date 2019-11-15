@@ -38,9 +38,9 @@ class Model:
         self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
         self.shape = Shape_Button(580,20,'Shape.png',50, self)
-        self.thin = Thickness_Button(160,250,'Thin.png',50,self,2)
-        self.medium = Thickness_Button(300,250,'Medium.png',50,self,7)
-        self.thick = Thickness_Button(440,250,'Thick.png',50,self,15)
+        self.draw_thin = Thickness_Button(160,250,'Thin.png',50,self,2)
+        self.draw_medium = Thickness_Button(300,250,'Medium.png',50,self,7)
+        self.draw_thick = Thickness_Button(440,250,'Thick.png',50,self,15)
         self.eraser_thin = Eraser_Thickness_Button(160,250,'Thin.png',50,self,2)
         self.eraser_medium = Eraser_Thickness_Button(300,250,'Medium.png',50,self,7)
         self.eraser_thick = Eraser_Thickness_Button(440,250,'Thick.png',50,self,15)
@@ -53,13 +53,13 @@ class Model:
         the area of any of the buttons.
         """
         if self.tool == 'thickness':
-            self.thin.check_pressed(cursor)
-            self.medium.check_pressed(cursor)
-            self.thick.check_pressed(cursor)
+            self.draw_thin.check_pressed(cursor)
+            self.draw_medium.check_pressed(cursor)
+            self.draw_thick.check_pressed(cursor)
         if self.tool == 'eraser_thickness':
-            self.thin_erase.check_pressed(cursor)
-            self.medium_erase.check_pressed(cursor)
-            self.thick_erase.check_pressed(cursor)
+            self.eraser_thin.check_pressed(cursor)
+            self.eraser_medium.check_pressed(cursor)
+            self.eraser_thick.check_pressed(cursor)
         self.clear.check_pressed(cursor)
         self.save.check_pressed(cursor)
         self.red.check_pressed(cursor)
@@ -155,9 +155,9 @@ class View:
         Calls the display function of all the buttons.
         """
         if self.model.tool == 'thickness':
-            self.model.thin.display(frame)
-            self.model.medium.display(frame)
-            self.model.thick.display(frame)
+            self.model.draw_thin.display(frame)
+            self.model.draw_medium.display(frame)
+            self.model.draw_thick.display(frame)
             return frame
         if self.model.tool == 'eraser_thickness':
             self.model.eraser_thin.display(frame)
