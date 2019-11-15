@@ -49,6 +49,11 @@ class Model:
         Add the current position of the cursor to points and checks if it is in
         the area of any of the buttons.
         """
+        if self.tool == 'thickness':
+            self.thin.check_pressed(cursor)
+            self.medium.check_pressed(cursor)
+            self.thick.check_pressed(cursor)
+            break
         self.clear.check_pressed(cursor)
         self.save.check_pressed(cursor)
         self.red.check_pressed(cursor)
@@ -59,10 +64,6 @@ class Model:
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
         self.shape.check_pressed(cursor)
-        if self.tool == 'thickness':
-            self.thin.check_pressed(cursor)
-            self.medium.check_pressed(cursor)
-            self.thick.check_pressed(cursor)
 
 class Controller:
     """
@@ -154,6 +155,7 @@ class View:
             self.model.thin.display(frame)
             self.model.medium.display(frame)
             self.model.thick.display(frame)
+            break
         self.model.save.display(frame)
         self.model.clear.display(frame)
         self.model.red.display(frame)
@@ -216,7 +218,7 @@ def main_loop():
     cap = cv2.VideoCapture(0)
     model.calibration_start = time.time()
     while True:
-        ret, frame = cap.read() # get a frame from the camera
+        _, frame = cap.read() # get a frame from the camera
         frame = process_frame(frame, model,controller,view)
         cv2.imshow('art!',frame)
         if cv2.waitKey(1) & 0xFF == ord('q') or model.tool == 'exit':
