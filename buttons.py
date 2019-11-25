@@ -115,11 +115,11 @@ class Shape_Button(Button):
 
 class Rectangle_Button(Button):
     def press(self):
-        self.model.tool = 'draw'
+        self.model.tool = 'rectangle_1'
 
-class Ellipse_Button(Button):
+class circle_Button(Button):
     def press(self):
-        self.model.tool = 'draw'
+        self.model.tool = 'circle_1'
 
 class Thickness_Button(Button):
     """

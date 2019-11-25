@@ -21,6 +21,8 @@ class Model:
         self.calibration_time = 6
         self.current_path = os.path.dirname(__file__)
         self.line_points = []
+        self.rectangle_points = []
+        self.circle_points = []
         self.cursor_1 = ()
         self.cursor_2 = ()
         self.pen_size = 7
@@ -45,7 +47,7 @@ class Model:
         self.eraser_medium = Eraser_Thickness_Button(300,250,'Medium.png',50,self,7)
         self.eraser_thick = Eraser_Thickness_Button(440,250,'Thick.png',50,self,15)
         self.rectangle = Rectangle_Button(160,250,'Rectangle.png',50,self)
-        self.ellipse = Ellipse_Button(440,250,'Ellipse.png',50,self)
+        self.circle = circle_Button(440,250,'Ellipse.png',50,self)
         #self.exit = Exit_Button(650,20,'Exit.png',50, self)
 
 
@@ -64,7 +66,7 @@ class Model:
             self.eraser_thick.check_pressed(cursor)
         if self.tool == 'shape':
             self.rectangle.check_pressed(cursor)
-            self.ellipse.check_pressed(cursor)
+            self.circle.check_pressed(cursor)
         self.clear.check_pressed(cursor)
         self.save.check_pressed(cursor)
         self.red.check_pressed(cursor)
@@ -141,11 +143,32 @@ class View:
         """
         for i in range(len(self.model.line_points)):
             if i > 0 and self.model.line_points[i-1] and self.model.line_points[i]: # make sure both endpoints exist
-                if self.model.line_points[i][3] < 100: # check the velocity of the target to filter out false positives
-                    cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], self.model.line_points[i][-1])
+                #if points[i][3] < 100: # check the velocity of the target to filter out false positives
+                cv2.line(frame, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], self.model.line_points[i][-1])
         return frame
 
-    def remove_lines(self,frame):
+    def show_rectangles(self, frame):
+        """
+        Iterates through all the points in the list of where the target has been
+        and draws lines between them.
+        """
+        for i in range(len(self.model.rectangle_points)):
+            if i > 0 and self.model.rectangle_points[i-1] and self.model.rectangle_points[i]: # make sure both endpoints exist
+                #if points[i][3] < 100: # check the velocity of the target to filter out false positives
+                cv2.rectangle(frame, self.model.rectangle_points[i-1][0:2], self.model.rectangle_points[i][0:2], self.model.line_colors[self.model.rectangle_points[i][2]], self.model.rectangle_points[i][-1])
+        return frame
+
+    def show_circles(self, frame):
+        """
+        Iterates through all the points in the list of where the target has been
+        and draws lines between them.
+        """
+        for i in range(len(self.model.circle_points)):
+            if i > 0 and self.model.circle_points[i-1] and self.model.circle_points[i]: # make sure both endpoints exist
+                cv2.circle(frame, self.model.circle_points[i-1][0:2], self.model.circle_points[i], self.model.line_colors[self.model.circle_points[i-1][2]], self.model.circle_points[i-1][-1])
+        return frame
+
+    def remove_lines(self):
         if self.model.cursor_1 and self.model.line_points:
             eraser_range_x = [i for i in range(int(self.model.cursor_1[0])-self.model.eraser_size, int(self.model.cursor_1[0])+self.model.eraser_size)]
             eraser_range_y = [i for i in range(int(self.model.cursor_1[1])-self.model.eraser_size, int(self.model.cursor_1[1])+self.model.eraser_size)]
@@ -171,7 +194,7 @@ class View:
             return frame
         if self.model.tool == 'shape':
             self.model.rectangle.display(frame)
-            self.model.ellipse.display(frame)
+            self.model.circle.display(frame)
             return frame
         self.model.save.display(frame)
         self.model.clear.display(frame)
@@ -194,6 +217,9 @@ class View:
 
 def process_frame(frame, model, controller, view):
     frame = cv2.flip(frame,1) # reverse the frame so people aren't confused
+    model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
+    model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
+
     if model.tool == 'calibration color 1' or model.tool =='calibration color 2':
         model.elapsed_time = time.time() - model.calibration_start
         if model.elapsed_time < model.calibration_time:
@@ -217,16 +243,45 @@ def process_frame(frame, model, controller, view):
                 model.tool = 'draw'
         return frame
 
-    model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
-    model.cursor_2 = controller.detect_wand(frame, model.lower_color_2, model.upper_color_2)
     if model.tool == 'draw':
         model.line_points.append(model.cursor_1)
+
     if model.tool == 'erase':
-        view.remove_lines(frame)
+        view.remove_lines()
+
+    if model.tool == 'rectangle_1':
+        if model.cursor_1:
+            model.rectangle_points.append(model.cursor_1)
+            model.tool = 'rectangle_2'
+
+    if model.tool == 'rectangle_2':
+        if model.cursor_1:
+            cv2.rectangle(frame, model.rectangle_points[-1][0:2], model.cursor_1[0:2], model.line_colors[model.rectangle_points[-1][2]], model.rectangle_points[-1][-1])
+        else:
+            model.rectangle_points.append(model.cursor_2)
+            model.rectangle_points.append(False)
+            model.tool = 'rectangle_1'
+
+    if model.tool == 'circle_1':
+        if model.cursor_1:
+            model.circle_points.append(model.cursor_1)
+            model.tool = 'circle_2'
+
+    if model.tool == 'circle_2':
+        if model.cursor_1:
+            radius = int(((model.circle_points[-1][0]-model.cursor_1[0])**2 + (model.circle_points[-1][1]-model.cursor_1[1])**2)**(1/2))
+            cv2.circle(frame, model.circle_points[-1][0:2], radius, model.line_colors[model.circle_points[-1][2]], model.circle_points[-1][-1])
+        elif model.cursor_2:
+            radius = int(((model.circle_points[-1][0]-model.cursor_2[0])**2 + (model.circle_points[-1][1]-model.cursor_2[1])**2)**(1/2))
+            model.circle_points.append(radius)
+            model.circle_points.append(False)
+            model.tool = 'circle_1'
 
     model.check_buttons(model.cursor_2)
 
     frame = view.show_lines(frame)
+    frame = view.show_rectangles(frame)
+    frame = view.show_circles(frame)
 
     frame = view.show_interface(frame)
     frame = view.show_cursor(frame)
