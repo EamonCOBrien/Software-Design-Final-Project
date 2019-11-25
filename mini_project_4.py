@@ -27,7 +27,7 @@ class Model:
         self.eraser_size = 8
         self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
         self.line_color = 'black'
-        self.tool = 'calibrate'
+        self.tool = 'calibration color 1'
         self.shape_started = False
         self.save = Save_Button(20,20,'Save.png',50,self)
         self.clear = Clear_Button(90,20,'Clear.png',50, self)
@@ -44,6 +44,8 @@ class Model:
         self.eraser_thin = Eraser_Thickness_Button(160,250,'Thin.png',50,self,2)
         self.eraser_medium = Eraser_Thickness_Button(300,250,'Medium.png',50,self,7)
         self.eraser_thick = Eraser_Thickness_Button(440,250,'Thick.png',50,self,15)
+        self.rectangle = Rectangle_Button(160,250,'Rectangle.png',50,self)
+        self.ellipse = Ellipse_Button(440,250,'Ellipse.png',50,self)
         #self.exit = Exit_Button(650,20,'Exit.png',50, self)
 
 
@@ -60,6 +62,9 @@ class Model:
             self.eraser_thin.check_pressed(cursor)
             self.eraser_medium.check_pressed(cursor)
             self.eraser_thick.check_pressed(cursor)
+        if self.tool == 'shape':
+            self.rectangle.check_pressed(cursor)
+            self.ellipse.check_pressed(cursor)
         self.clear.check_pressed(cursor)
         self.save.check_pressed(cursor)
         self.red.check_pressed(cursor)
@@ -164,6 +169,10 @@ class View:
             self.model.eraser_medium.display(frame)
             self.model.eraser_thick.display(frame)
             return frame
+        if self.model.tool == 'shape':
+            self.model.rectangle.display(frame)
+            self.model.ellipse.display(frame)
+            return frame
         self.model.save.display(frame)
         self.model.clear.display(frame)
         self.model.red.display(frame)
@@ -174,6 +183,9 @@ class View:
         self.model.erase.display(frame)
         self.model.calibrate.display(frame)
         self.model.shape.display(frame)
+        return frame
+
+    def show_cursor(self, frame):
         if self.model.cursor_1: #drawing cursor
             cv2.circle(frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
         if self.model.cursor_2: #selecting cursor
@@ -182,25 +194,27 @@ class View:
 
 def process_frame(frame, model, controller, view):
     frame = cv2.flip(frame,1) # reverse the frame so people aren't confused
-    if model.tool == 'calibrate' and model.elapsed_time < model.calibration_time:
+    if model.tool == 'calibration color 1' or model.tool =='calibration color 2':
         model.elapsed_time = time.time() - model.calibration_start
-        cv2.putText(frame,'Place color 1 in center:' + str(int(model.calibration_time - model.elapsed_time)),(30,20),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
-        cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 50,(255,255,255), thickness = 3)
-        cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
-        return frame
-    if model.tool == 'calibrate' and model.elapsed_time > model.calibration_time:
-        kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
-        frame = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
-        frame = cv2.GaussianBlur(frame, (17, 17), 0)
-        hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        pixel = hsv_frame[int(frame.shape[0]/2), int(frame.shape[1]/2)] # grab the pixel from the center of the calibration circle
-        if not model.upper_color_1.any():
-            model.lower_color_1, model.upper_color_1 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
-            model.elapsed_time = 0
-            model.calibration_start = time.time()
-        elif not model.upper_color_2.any():
-            model.lower_color_2, model.upper_color_2 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
-            model.tool = 'draw'
+        if model.elapsed_time < model.calibration_time:
+            cv2.putText(frame,'Place '+ model.tool + ' in center:' + str(int(model.calibration_time - model.elapsed_time)),(30,30),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
+            cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 50,(255,255,255), thickness = 3)
+            cv2.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
+            return frame
+        if model.elapsed_time > model.calibration_time:
+            kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
+            frame = cv2.dilate(frame, kernel) # blur the frame to average out the value in the circle
+            frame = cv2.GaussianBlur(frame, (17, 17), 0)
+            hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+            pixel = hsv_frame[int(frame.shape[0]/2), int(frame.shape[1]/2)] # grab the pixel from the center of the calibration circle
+            if model.tool == 'calibration color 1':
+                model.lower_color_1, model.upper_color_1 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
+                model.elapsed_time = 0
+                model.calibration_start = time.time()
+                model.tool = 'calibration color 2'
+            elif model.tool =='calibration color 2':
+                model.lower_color_2, model.upper_color_2 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
+                model.tool = 'draw'
         return frame
 
     model.cursor_1 = controller.detect_wand(frame, model.lower_color_1, model.upper_color_1)
@@ -215,6 +229,7 @@ def process_frame(frame, model, controller, view):
     frame = view.show_lines(frame)
 
     frame = view.show_interface(frame)
+    frame = view.show_cursor(frame)
 
     return frame
 

@@ -106,13 +106,20 @@ class Calibration_Button(Button):
     A class to add the ability to recalibrate while the program is running
     """
     def press(self):
-        self.model.tool = 'calibrate'
+        self.model.tool = 'calibration color 1'
         self.model.calibration_start = time.time()
 
 class Shape_Button(Button):
     def press(self):
-        #self.model.tool = 'rectangle'
-        pass
+        self.model.tool = 'shape'
+
+class Rectangle_Button(Button):
+    def press(self):
+        self.model.tool = 'draw'
+
+class Ellipse_Button(Button):
+    def press(self):
+        self.model.tool = 'draw'
 
 class Thickness_Button(Button):
     """
