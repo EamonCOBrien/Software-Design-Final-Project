@@ -37,8 +37,9 @@ def gen(camera): # i think this is where we would run all of our original code
         frame = camera.get_frame() # get the frame in binary from Opencv
         frame = np.frombuffer(frame, np.uint8) # turn the binary into an array
         frame = cv2.imdecode(frame, cv2.IMREAD_UNCHANGED) # turn the array into an image
-        frame = process_frame(frame, model, controller, view) # run MP4 on the image
-        frame = cv2.imencode('.jpg', frame)[1].tobytes() # turn the image back into binary
+        model.frame = frame
+        process_frame(model, controller, view) # run MP4 on the image
+        frame = cv2.imencode('.jpg', model.frame)[1].tobytes() # turn the image back into binary
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') # send the binary to the web app
 

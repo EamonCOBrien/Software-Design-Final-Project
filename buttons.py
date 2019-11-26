@@ -28,11 +28,11 @@ class Button:
                 self.pressed = False
 
     def display(self,frame):
-        for i in range(self.size):
-            for j in range(self.size):
-                if self.icon[i,j][3] > 20:
-                    frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
-        #frame[self.y:self.y+self.size,self.x:self.x+self.size] = self.icon[0:int(self.icon.shape[0]), 0:int(self.icon.shape[1])]
+        #for i in range(self.size):
+            #for j in range(self.size):
+                #if self.icon[i,j][3] > 20:
+                    #frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
+        frame[self.y:self.y+self.size,self.x:self.x+self.size] = self.icon[0:int(self.icon.shape[0]), 0:int(self.icon.shape[1])]
 
 class Save_Button(Button):
     """
