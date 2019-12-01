@@ -11,10 +11,18 @@
     background: url("https://images4.alphacoders.com/795/thumb-1920-79578.png");
     background-size:cover;
   }
+  .vertical{
+    margin-top:10%;
+  }
+  .content_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   </style>
-    <title>
-        Rules
-    </title>
+  <title>
+      Introduction
+  </title>
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -47,27 +55,30 @@
 <div class="header-bg">
   <div>
     <br><br><br>
-    <h1 class="text-center" style="color:white">How to use our Product</h1>
+    <h1 class="text-center" style="color:white">The Evolution of CVPaint</h1>
     <br><br>
   </div>
 </div>
 
 <div class="container" text-justify>
   <body>
-    <br>
-    <p> This is where we're going to write the rules and instructions for using our program... </p>
-    <p> We'll talk about all the cool gadgets you can use. </p>
-    <p> How there are 2 cursors, 'draw' and 'select'. </p>
-    <p> Fun pictures and maybe even videos on how to select and draw and use all the gadgets we gave you. </p>
-    <p> What you can use as a drawing wand and why. As well as attaching an STL file of the wand we use so that anyone can 3D print their own MAGIC WAND. </p>
-    <a href="static/Luna_2_2.STL" download="Magic Wand STL">
-      <img src="static/Wand.png" alt="Wand STL">
-      <p>Click image for wand STL</p>
-      <!-- <p class="text-center">Click wand for wand STL</p> -->
-    </a>
-    <p> And finally we'll talk about how to save and exit. As well as how to ask us questions, collaborate with us, and send better coding ideas. We'll probably attach the real code somewhere, along with instructions on how to use and run it in Ubuntu. </p>
-  </body>
-
+    <div class="row">
+      <div class="col-4"> <!-- dif ized mage, smaller? -->
+        <div class="thumbnail">
+          <img src="static/placeHold.jpeg" alt="MP4 final pic" style="width:100%">
+          <div class="MP4Pic">
+            <p class="text-center">MP4 original program</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-8">
+        <!-- <br><br><br><br> -->
+        <h4 style="color:blue" class="text-center">Our Story/Process</h4>
+        <p class="content_center"> CVPaint started as a mini-project meant to teach students how to make interactive programs through game design.
+         We started the project using python and openCV to make basic color tracking and drawing capabilities. </p>
+       </div>
+     </div>
+   </body>
 </div>
 
 </html>
