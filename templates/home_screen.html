@@ -18,6 +18,14 @@ at the home URL.-->
       background: url("https://images4.alphacoders.com/795/thumb-1920-79578.png");
       background-size:cover;
     }
+    .ovl {
+      opacity: 0;
+    }
+    .ovl:hover {
+      top: 50%;
+      opacity: 1;
+      background: rgb(0,0,0,0.6);
+    }
   </style>
   <title>
       Home Page
@@ -93,27 +101,36 @@ at the home URL.-->
 <div class="container" text-justify>
   <div class="row">
    <div class="col-4">
-     <div class="thumbnail">
-         <img src="static/EamonHome.jpg" alt="Eamon" style="width:100%">
-         <div class="Eamon">
-           <p class="text-center">Eamon O'Brien: Resident RoboE</p>
+     <div class="card bg-dark text-white">
+       <div class="thumbnail">
+         <img class="card-img" src="static/EamonHome.jpg" alt="Eamon" style="width:100%">
+         <div class="card-img-overlay ovl"> <!-- ovl style class-->
+           <h4 class="card-title"> Eamon O'Brien: Resident RoboE </h4>
+           <p class="card-text"> Eamon is a junior studying Engineering with Robotics at Olin College of Engineering. </p>
          </div>
+       </div>
      </div>
    </div>
    <div class="col-4">
-     <div class="thumbnail">
-         <img src="static/CaliHome.jpg" alt="Cali" style="width:100%">
-         <div class="Cali">
-           <p class="text-center">Cali Wierzbanowski: Resident ECE</p>
+     <div class="card bg-dark text-white">
+       <div class="thumbnail">
+         <img class="card-img" src="static/CaliHome.jpg" alt="Cali" style="width:100%">
+         <div class="card-img-overlay ovl">
+           <h4 class="card-title"> Cali Wierzbanowski: Resident ECE </h4>
+           <p class="card-text"> Cali is a junior studying Electrical and Computer Engineering at Olin College of Engineering. </p>
          </div>
+       </div>
      </div>
    </div>
    <div class="col-4">
-     <div class="thumbnail">
-         <img src="static/GailHome.jpg" alt="Gail" style="width:100%">
-         <div class="Gail">
-           <p class="text-center">Gail Romer: Resident MechE</p>
+     <div class="card bg-dark text-white">
+       <div class="thumbnail">
+         <img class="card-img" src="static/GailHome.jpg" alt="Gail" style="width:100%">
+         <div class="card-img-overlay ovl">
+           <h4 class="card-title"> Gail Romer: Resident MechE </h4>
+           <p class="card-text"> Gail is a sophomore studying Mechanical Engineering at Olin College of Engineering. </p>
          </div>
+       </div>
      </div>
    </div>
   </div>
