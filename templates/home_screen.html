@@ -1,6 +1,8 @@
 <!--home_screen.html provides the homescreen design
 at the home URL.-->
 
+<!--ovl:hover might include    top: 50%;    -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,9 +22,9 @@ at the home URL.-->
     }
     .ovl {
       opacity: 0;
+      transition: 0.75s;
     }
     .ovl:hover {
-      top: 50%;
       opacity: 1;
       background: rgb(0,0,0,0.6);
     }
@@ -60,17 +62,10 @@ at the home URL.-->
 </nav>
 
 <div class="header-bg">
-  <!-- <div style="background-color:lightblue"> -->
-  <!-- <div class="col-sm-3 col-xs-0"> -->
   <div>
     <br><br><br>
     <h1 class="text-center" style="color:white">CVPaint</h1>
     <br><br>
-  <!-- <div class="container"> -->
-  <!-- <div class="col-sm-12 col-xs-0" style="padding-left: 0px;  padding-right: 0px;"> -->
-    <!-- <img src="https://images4.alphacoders.com/795/thumb-1920-79578.png" class="img-fluid" style="width:100%;height:180px"> -->
-    <!-- <div class="centered" style="color:white"><h1>[Insert Project Name Here]</h1></div> -->
-  <!-- <a href="#"><img class="image-responsive img-rounded" alt="B-Flight" src="https://images4.alphacoders.com/795/thumb-1920-79578.png" id="banner" /></a> -->
   </div>
 </div>
 
@@ -89,14 +84,6 @@ at the home URL.-->
     <h4  style="color:blue" class="text-center">The Team!</h4>
     <br>
   </div>
-
-  <div>
-  <!-- <form action="/draw" method="POST">
-    <input class="btn btn-primary btn-lg btn-center" type="submit" value="Start/Play">
-  </form> -->
-  </div>
-  </body>
-</div>
 
 <div class="container" text-justify>
   <div class="row">
@@ -136,4 +123,17 @@ at the home URL.-->
   </div>
 </div>
 
+<!-- Footer -->
+<section id="footer">
+	<div class="container">
+    <div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-black">
+        <br><br>
+				<p><u><a style="color:blue" href="https://drawing-program-demo.herokuapp.com/">CVPaint</a></u> is a final project created by students of <u><a style="color:blue" href="https://olin.edu">Franklin W. Olin College of Engineering</a></u> in Needham, MA</p>
+				<!--<p class="h6">&copy All right Reversed.<a class="text-green ml-2" href="https://www.sunlimetech.com" target="_blank">Sunlimetech</a></p>-->
+			</div>
+		</div>
+	</div>
+</section>
+<!-- ./Footer -->
 </html>
