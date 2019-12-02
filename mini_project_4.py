@@ -40,7 +40,6 @@ class Model:
         self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
         self.shape = Shape_Button(580,20,'Shape.png',50, self)
-<<<<<<< HEAD
         self.draw_thin = Thickness_Button(160,20,'Thin.png',50,self,2)
         self.draw_medium = Thickness_Button(300,20,'Medium.png',50,self,7)
         self.draw_thick = Thickness_Button(440,20,'Thick.png',50,self,15)
@@ -49,18 +48,6 @@ class Model:
         self.eraser_thick = Eraser_Thickness_Button(440,20,'Thick.png',50,self,15)
         self.rectangle = Rectangle_Button(160,20,'Rectangle.png',50,self)
         self.circle = circle_Button(440,20,'Ellipse.png',50,self)
-=======
-        self.draw_thin = Thickness_Button(160,250,'Thin.png',50,self,2)
-        self.draw_medium = Thickness_Button(300,250,'Medium.png',50,self,7)
-        self.draw_thick = Thickness_Button(440,250,'Thick.png',50,self,15)
-        self.eraser_thin = Eraser_Thickness_Button(160,250,'Thin.png',50,self,2)
-        self.eraser_medium = Eraser_Thickness_Button(300,250,'Medium.png',50,self,7)
-        self.eraser_thick = Eraser_Thickness_Button(440,250,'Thick.png',50,self,15)
-        self.rectangle = Rectangle_Button(160,250,'Rectangle.png',50,self)
-        self.circle = circle_Button(440,250,'Ellipse.png',50,self)
-        #self.exit = Exit_Button(650,20,'Exit.png',50, self)
-
->>>>>>> parent of ff5b451... Change interface, drastically improve performance
 
     def check_buttons(self, cursor):
         """
