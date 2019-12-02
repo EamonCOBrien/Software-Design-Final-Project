@@ -49,8 +49,6 @@ class Model:
         self.eraser_thick = Eraser_Thickness_Button(440,20,'Thick.png',50,self,15)
         self.rectangle = Rectangle_Button(160,20,'Rectangle.png',50,self)
         self.circle = circle_Button(440,20,'Ellipse.png',50,self)
-        #self.exit = Exit_Button(650,20,'Exit.png',50, self)
-
 
     def check_buttons(self, cursor):
         """
@@ -74,7 +72,6 @@ class Model:
         self.blue.check_pressed(cursor)
         self.green.check_pressed(cursor)
         self.black.check_pressed(cursor)
-        #self.exit.check_pressed(cursor)
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
         self.shape.check_pressed(cursor)
@@ -106,10 +103,11 @@ class Controller:
         """
         kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
         blurred = cv2.GaussianBlur(self.model.frame, (17, 17), 0)
-        blurred = cv2.dilate(self.model.frame, kernel) # blur the frame to average out the value in the circle
-        hsv_frame = cv2.cvtColor(self.model.frame, cv2.COLOR_BGR2HSV)
+        blurred = cv2.dilate(blurred, kernel) # blur the frame to average out the value in the circle
+        hsv_frame = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
         mask = cv2.inRange(hsv_frame, lower, upper)
         contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print(contours)
         contours = imutils.grab_contours(contours)
         center = None
 
@@ -214,11 +212,10 @@ def process_frame(model, controller, view):
     model.frame = cv2.flip(model.frame,1) # reverse the frame so people aren't confused
     model.cursor_1 = controller.detect_wand(model.lower_color_1, model.upper_color_1)
     model.cursor_2 = controller.detect_wand(model.lower_color_2, model.upper_color_2)
-
     if model.tool == 'calibration color 1' or model.tool =='calibration color 2':
         model.elapsed_time = time.time() - model.calibration_start
         if model.elapsed_time < model.calibration_time:
-            cv2.putText(model.frame,'Place '+ model.tool + ' in center:' + str(int(model.calibration_time - model.elapsed_time)),(30,30),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
+            cv2.putText(model.frame,'Place '+ model.tool + ' in center:' + str(int(model.calibration_time - model.elapsed_time)),(30,30),cv2.FONT_HERSHEY_DUPLEX,1,(0, 0, 0))
             cv2.circle(model.frame, (int(model.frame.shape[1]/2), int(model.frame.shape[0]/2)), 50,(255,255,255), thickness = 3)
             cv2.circle(model.frame, (int(model.frame.shape[1]/2), int(model.frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
         elif model.elapsed_time > model.calibration_time:
@@ -228,12 +225,12 @@ def process_frame(model, controller, view):
             hsv_frame = cv2.cvtColor(model.frame, cv2.COLOR_BGR2HSV)
             pixel = hsv_frame[int(model.frame.shape[0]/2), int(model.frame.shape[1]/2)] # grab the pixel from the center of the calibration circle
             if model.tool == 'calibration color 1':
-                model.lower_color_1, model.upper_color_1 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
+                model.lower_color_1, model.upper_color_1 = (np.array([int(pixel[0]-10),50,50]), np.array([int(pixel[0]+10),250,250]))
                 model.elapsed_time = 0
                 model.calibration_start = time.time()
                 model.tool = 'calibration color 2'
             elif model.tool =='calibration color 2':
-                model.lower_color_2, model.upper_color_2 = (np.array([pixel[0]-10,50,50]), np.array([pixel[0]+10,250,250]))
+                model.lower_color_2, model.upper_color_2 = (np.array([int(pixel[0]-10),50,50]), np.array([int(pixel[0]+10),250,250]))
                 model.tool = 'draw'
 
     elif model.tool == 'draw':
@@ -270,7 +267,8 @@ def process_frame(model, controller, view):
             model.circle_points.append(False)
             model.tool = 'circle_1'
 
-    model.check_buttons(model.cursor_2)
+    else:
+        model.check_buttons(model.cursor_2)
 
     view.show_lines()
     view.show_rectangles()
