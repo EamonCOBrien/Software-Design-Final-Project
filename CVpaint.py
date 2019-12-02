@@ -34,11 +34,14 @@ def video_feed():
 def gen(camera): # i think this is where we would run all of our original code
     """Video streaming generator function."""
     while True:
-        frame = camera.get_frame() # get the frame in binary from Opencv
-        frame = np.frombuffer(frame, np.uint8) # turn the binary into an array
-        frame = cv2.imdecode(frame, cv2.IMREAD_UNCHANGED) # turn the array into an image
-        frame = process_frame(frame, model, controller, view) # run MP4 on the image
-        frame = cv2.imencode('.jpg', frame)[1].tobytes() # turn the image back into binary
+        feed = camera.get_frame() # get the frame in binary from Opencv
+        feed = np.frombuffer(feed, np.uint8) # turn the binary into an array
+        feed = cv2.imdecode(feed, cv2.IMREAD_UNCHANGED) # turn the array into an image
+        interface = [[[255,255,255] for _ in range(640)] for _ in range(90)]
+        interface = np.asarray(interface, dtype=np.float32)
+        model.frame = np.concatenate((interface, feed), axis=0)
+        process_frame(model, controller, view) # run MP4 on the image
+        frame = cv2.imencode('.jpg', model.frame)[1].tobytes() # turn the image back into binary
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') # send the binary to the web app
 
