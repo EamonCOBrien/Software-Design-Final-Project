@@ -16,6 +16,10 @@ def home():
 def introduction():
     return render_template('intro.html')
 
+@app.route('/story')
+def story():
+    return render_template('story.html')
+
 @app.route('/rules')
 def rules():
     return render_template('rules.html')
