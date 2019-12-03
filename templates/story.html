@@ -19,13 +19,89 @@
     justify-content: center;
     align-items: center;
   }
+  /* .nav:hover {
+    background: rgb(0,0,0,0.5);
+    transition: 0.8s;
+  } */
+  .topnav {
+    overflow: hidden;
+    background-color: white; /* #333 */
+  }
+  .topnav a {
+    float: left;
+    color: black; /*#f2f2f2;*/
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .topnav b {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+    transition: 0.8s;
+  }
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  /* Create columns that float next to each other */
+  .column_sm {
+    float: left;
+    width: 33.33%;
+    padding: 15px;
+  }
+  .column_lg {
+    float: left;
+    width: 66.66%;
+    padding: 15px;
+  }
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  /*Variable padding*/
+  .pad {
+    width: 66.66%;
+    height: 50%
+    padding: 50px;
+    box-sizing: border-box;
+  }
+  /* Responsive layout - columns will stack on top of each other instead of next to each other if window is too small*/
+  @media screen and (max-width:700px) {
+    .column_sm {
+      width: 100%;
+    }
+    .column_lg {
+      width: 100%;
+    }
+  }
   </style>
-  <title>
-      Introduction
-  </title>
+  <title>Introduction</title>
+  <link rel="icon" href="static/Wand.png"></link>
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="topnav">
+  <!-- <img class="card-img" src="static/Wand.png" alt="Wand" style="width:5%"> -->
+  <b href="#"><img src="static/Wand.png" alt="Wand" style="width:7%"> CVPaint</b>
+  <a href="/">Home</a>
+  <a href="/intro">Introduction</a>
+  <a class="active" href="/story">Evolution</a>
+  <a href="/rules">How To Play</a>
+  <a href="/draw">Start</a>
+</div>
+
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <img class="card-img" src="static/Wand.png" alt="Wand" style="width:5%">
   <a class="navbar-brand" href="#">CVPaint</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -34,23 +110,23 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link nav" href="/">Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/intro">Introduction</a>
+        <a class="nav-link nav" href="/intro">Introduction</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/story">Evolution</a>
+        <a class="nav-link nav" href="/story">Evolution</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/rules">How to Play</a>
+        <a class="nav-link nav" href="/rules">How to Play</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/draw">Start</a>
+        <a class="nav-link nav" href="/draw">Start</a>
       </li>
     </ul>
   </div>
-</nav>
+</nav> -->
 
 <div class="header-bg">
   <div>
@@ -60,25 +136,51 @@
   </div>
 </div>
 
+
+
 <div class="container" text-justify>
   <body>
+    <br><br>
     <div class="row">
-      <div class="col-4"> <!-- dif ized mage, smaller? -->
-        <div class="thumbnail">
-          <img src="static/placeHold.jpeg" alt="MP4 final pic" style="width:100%">
-          <div class="MP4Pic">
-            <p class="text-center">MP4 original program</p>
-          </div>
+      <div class="column_sm">
+        <img src="static/placeHold.jpeg" alt="MP4 final pic" style="width:100%">
+        <div class="MP4Pic">
+          <p class="text-center">MP4 original program</p>
         </div>
       </div>
-      <div class="col-8">
-        <!-- <br><br><br><br> -->
+      <div class="column_lg pad">
         <h4 style="color:blue" class="text-center">Our Story/Process</h4>
-        <p class="content_center"> CVPaint started as a mini-project meant to teach students how to make interactive programs through game design.
-         We started the project using python and openCV to make basic color tracking and drawing capabilities. </p>
-       </div>
-     </div>
-   </body>
+        <p> CVPaint started as a mini-project meant to teach students how to make interactive programs through game design.
+          We started the project using python and openCV to make basic color tracking and drawing capabilities. </p>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="column_lg pad">
+        <br>
+        <p> After that we started working on x,y,z and all sorts of other things. </p>
+      </div>
+      <div class="column_sm">
+        <img src="static/placeHold.jpeg" alt="Pic2" style="width:100%">
+        <div class="MP4Pic">
+          <p class="text-center">New Webpage</p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="column_sm">
+        <img src="static/placeHold.jpeg" alt="Pic3" style="width:100%">
+        <div class="MP4Pic">
+          <p class="text-center">Next Pic</p>
+        </div>
+      </div>
+      <div class="column_lg pad">
+        <br>
+        <p>This is the third parapgraph that coicidentally goes with the third picture. I think this looks like and semi-professional so we're going to try it. yay.</p>
+      </div>
+    </div>
+  </body>
 </div>
 
 </html>

@@ -11,13 +11,56 @@
     background: url("https://images4.alphacoders.com/795/thumb-1920-79578.png");
     background-size:cover;
   }
+  /* .nav:hover {
+    background: rgb(0,0,0,0.5);
+    transition: 0.8s;
+  } */
+  .topnav {
+    overflow: hidden;
+    background-color: white; /* #333 */
+  }
+  .topnav a {
+    float: left;
+    color: black; /*#f2f2f2;*/
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .topnav b {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+    transition: 0.8s;
+  }
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
   </style>
-  <title>
-      Introduction
-  </title>
+  <title>Introduction</title>
+  <link rel="icon" href="static/Wand.png"></link>
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="topnav">
+  <!-- <img class="card-img" src="static/Wand.png" alt="Wand" style="width:5%"> -->
+  <b href="#"><img src="static/Wand.png" alt="Wand" style="width:7%"> CVPaint</b>
+  <a href="/">Home</a>
+  <a class="active" href="/intro">Introduction</a>
+  <a href="/story">Evolution</a>
+  <a href="/rules">How To Play</a>
+  <a href="/draw">Start</a>
+</div>
+
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <img class="card-img" src="static/Wand.png" alt="Wand" style="width:5%">
   <a class="navbar-brand" href="#">CVPaint</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -26,23 +69,23 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link nav" href="/">Home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/intro">Introduction</a>
+        <a class="nav-link nav" href="/intro">Introduction</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/story">Evolution</a>
+        <a class="nav-link nav" href="/story">Evolution</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/rules">How to Play</a>
+        <a class="nav-link nav" href="/rules">How to Play</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="/draw">Start</a>
+        <a class="nav-link nav" href="/draw">Start</a>
       </li>
     </ul>
   </div>
-</nav>
+</nav> -->
 
 <div class="header-bg">
   <div>
