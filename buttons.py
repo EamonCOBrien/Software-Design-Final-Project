@@ -117,7 +117,7 @@ class Rectangle_Button(Button):
     def press(self):
         self.model.tool = 'rectangle_1'
 
-class Circle_Button(Button):
+class Ellipse_Button(Button):
     def press(self):
         self.model.tool = 'circle_1'
 
@@ -146,5 +146,9 @@ class Eraser_Thickness_Button(Button):
         self.model.eraser_size = self.eraser_size
 
 class Pen_Button(Button):
+    def press(self):
+        self.model.tool = 'draw'
+
+class Color_Select_Button(Button):
     def press(self):
         self.model.tool = 'draw'

@@ -32,25 +32,14 @@ class Model:
         self.line_color = 'black'
         self.tool = 'calibration color 1'
         self.shape_started = False
-        self.save = Save_Button(20,20,'Save.png',50,self)
-        self.clear = Clear_Button(90,20,'Clear.png',50, self)
-        self.erase = Erase_Button(160,20,'Erase.png',50, self, 'grey', self.eraser_size)
-        self.red = Color_Button(230,20,'Red.png',50, self, 'red', self.pen_size)
-        self.blue = Color_Button(300,20,'Blue.png',50, self,'blue', self.pen_size)
-        self.green = Color_Button(370,20,'Green.png',50, self,'green', self.pen_size)
-        self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
-        self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
-        self.shape = Shape_Button(580,20,'Shape.png',50, self)
-        self.draw_thin = Thickness_Button(160,20,'Thin.png',50,self,2)
-        self.draw_medium = Thickness_Button(300,20,'Medium.png',50,self,7)
-        self.draw_thick = Thickness_Button(440,20,'Thick.png',50,self,15)
-        self.eraser_thin = Eraser_Thickness_Button(160,20,'Thin.png',50,self,2)
-        self.eraser_medium = Eraser_Thickness_Button(300,20,'Medium.png',50,self,7)
-        self.eraser_thick = Eraser_Thickness_Button(440,20,'Thick.png',50,self,15)
-        self.rectangle = Rectangle_Button(160,20,'Rectangle.png',50,self)
-        self.circle = circle_Button(440,20,'Ellipse.png',50,self)
-        #self.exit = Exit_Button(650,20,'Exit.png',50, self)
-
+        self.save = Save_Button(20, 20, 'Save.png', 50, self)
+        self.clear = Clear_Button(90, 20, 'Clear.png', 50, self)
+        self.erase = Erase_Button(160, 20, 'Erase.png', 50, self, 'grey', self.eraser_size)
+        self.pen = Pen_Button(230, 20, 'Pen.png', 50, self)
+        self.color = Color_Select_Button(300, 20, 'Color.png', 50, self)
+        self.rectangle = Rectangle_Button(370, 20, 'Rectangle.png', 50, self)
+        self.ellipse = Ellipse_Button(440, 20, 'Ellipse.png', 50, self)
+        self.calibrate = Calibration_Button(510, 20,'Calibrate.png', 50, self)
 
     def check_buttons(self, cursor):
         """
@@ -58,26 +47,15 @@ class Model:
         the area of any of the buttons.
         """
         if self.tool == 'thickness':
-            self.draw_thin.check_pressed(cursor)
-            self.draw_medium.check_pressed(cursor)
-            self.draw_thick.check_pressed(cursor)
-        if self.tool == 'eraser_thickness':
-            self.eraser_thin.check_pressed(cursor)
-            self.eraser_medium.check_pressed(cursor)
-            self.eraser_thick.check_pressed(cursor)
-        if self.tool == 'shape':
-            self.rectangle.check_pressed(cursor)
-            self.circle.check_pressed(cursor)
+            pass
+        self.rectangle.check_pressed(cursor)
+        self.ellipse.check_pressed(cursor)
         self.clear.check_pressed(cursor)
         self.save.check_pressed(cursor)
-        self.red.check_pressed(cursor)
-        self.blue.check_pressed(cursor)
-        self.green.check_pressed(cursor)
-        self.black.check_pressed(cursor)
-        #self.exit.check_pressed(cursor)
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
-        self.shape.check_pressed(cursor)
+        self.color.check_pressed(cursor)
+        self.pen.check_pressed(cursor)
 
 class Controller:
     """
@@ -183,26 +161,16 @@ class View:
         if self.model.tool != 'calibration color 1' and self.model.tool != 'calibration color 2':
             cv2.rectangle(self.model.frame,(0,0),(self.model.frame.shape[1],90),(255,255,255),-1)
             if self.model.tool == 'thickness':
-                self.model.draw_thin.display(self.model.frame)
-                self.model.draw_medium.display(self.model.frame)
-                self.model.draw_thick.display(self.model.frame)
-            elif self.model.tool == 'eraser_thickness':
-                self.model.eraser_thin.display(self.model.frame)
-                self.model.eraser_medium.display(self.model.frame)
-                self.model.eraser_thick.display(self.model.frame)
-            elif self.model.tool == 'shape':
-                self.model.rectangle.display(self.model.frame)
-                self.model.circle.display(self.model.frame)
+                pass
             else:
                 self.model.save.display(self.model.frame)
                 self.model.clear.display(self.model.frame)
-                self.model.red.display(self.model.frame)
-                self.model.blue.display(self.model.frame)
-                self.model.green.display(self.model.frame)
-                self.model.black.display(self.model.frame)
                 self.model.erase.display(self.model.frame)
                 self.model.calibrate.display(self.model.frame)
-                self.model.shape.display(self.model.frame)
+                self.model.color.display(self.model.frame)
+                self.model.pen.display(self.model.frame)
+                self.model.ellipse.display(self.model.frame)
+                self.model.rectangle.display(self.model.frame)
 
     def show_cursor(self):
         if self.model.cursor_1: #drawing cursor
