@@ -11,11 +11,11 @@
     background: url("https://images4.alphacoders.com/795/thumb-1920-79578.png");
     background-size:cover;
   }
-  /* .nav:hover {
-    background: rgb(0,0,0,0.5);
-    transition: 0.8s;
-  } */
-
+  .content_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .topnav {
     overflow: hidden;
     background-color: white; /* #333 */
@@ -39,12 +39,27 @@
   .topnav a:hover {
     background-color: #ddd;
     color: black;
-    transition: 0.8s;
+    transition: 0.6s;
   }
   .topnav a.active {
     background-color: #4CAF50;
     color: white;
   }
+  .button {
+    background-color: #f4511e;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .button:hover {opacity: 1}
   </style>
     <title>Rules</title>
     <link rel="icon" href="static/Wand.png"></link>
@@ -59,34 +74,6 @@
   <a class="active" href="/rules">How To Play</a>
   <a href="/draw">Start</a>
 </div>
-
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <img class="card-img" src="static/Wand.png" alt="Wand" style="width:5%">
-  <a class="navbar-brand" href="#">CVPaint</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button> -->
-
-  <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link nav" href="/">Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link nav" href="/intro">Introduction</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link nav" href="/story">Evolution</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link nav" href="/rules">How to Play</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link nav" href="/draw">Start</a>
-      </li>
-    </ul>
-  </div>
-</nav> -->
 
 <div class="header-bg">
   <div>
@@ -104,11 +91,17 @@
     <p> How there are 2 cursors, 'draw' and 'select'. </p>
     <p> Fun pictures and maybe even videos on how to select and draw and use all the gadgets we gave you. </p>
     <p> What you can use as a drawing wand and why. As well as attaching an STL file of the wand we use so that anyone can 3D print their own MAGIC WAND. </p>
-    <a href="static/Luna_2_2.STL" download="Magic Wand STL">
-      <img src="static/Wand.png" alt="Wand STL">
-      <p>Click image for wand STL</p>
-      <!-- <p class="text-center">Click wand for wand STL</p> -->
-    </a>
+    <div class="content_center">
+      <img src="static/MagicWand.png" alt="Wand STL" style="width:320px">
+      <br>
+    </div>
+    <div class="content_center">
+      <a href="static/Wand.stl" download="Magic Wand STL">
+        <button class="button">Click to download Magic Wand STL</button>
+        <!-- <p>Click to download Magic Wand STL</p> -->
+        <!-- <p class="text-center">Click wand for wand STL</p> -->
+      </a>
+    </div>
     <p> And finally we'll talk about how to save and exit. As well as how to ask us questions, collaborate with us, and send better coding ideas. We'll probably attach the real code somewhere, along with instructions on how to use and run it in Ubuntu. </p>
   </body>
 
