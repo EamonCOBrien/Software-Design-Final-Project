@@ -32,7 +32,6 @@ class Model:
         self.line_color = 'black'
         self.tool = 'calibration color 1'
         self.shape_started = False
-        self.save = Save_Button(20, 20, 'Save.png', 50, self)
         self.clear = Clear_Button(90, 20, 'Clear.png', 50, self)
         self.erase = Erase_Button(160, 20, 'Erase.png', 50, self, 'grey', self.eraser_size)
         self.pen = Pen_Button(230, 20, 'Pen.png', 50, self)
@@ -56,7 +55,6 @@ class Model:
         self.rectangle.check_pressed(cursor)
         self.ellipse.check_pressed(cursor)
         self.clear.check_pressed(cursor)
-        self.save.check_pressed(cursor)
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
         self.color.check_pressed(cursor)
@@ -170,7 +168,6 @@ class View:
                 self.model.draw_medium.display(self.model.frame)
                 self.model.draw_thick.display(self.model.frame)
             else:
-                self.model.save.display(self.model.frame)
                 self.model.clear.display(self.model.frame)
                 self.model.erase.display(self.model.frame)
                 self.model.calibrate.display(self.model.frame)
