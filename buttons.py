@@ -32,7 +32,7 @@ class Button:
             for j in range(self.size):
                 if self.icon[i,j][3] > 20:
                     frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
-        # frame[self.y:self.y+self.size,self.x:self.x+self.size] = self.icon[0:int(self.icon.shape[0]), 0:int(self.icon.shape[1])]
+        #frame[self.y:self.y+self.size,self.x:self.x+self.size] = self.icon[0:int(self.icon.shape[0]), 0:int(self.icon.shape[1])]
 
 class Save_Button(Button):
     """
@@ -117,7 +117,7 @@ class Rectangle_Button(Button):
     def press(self):
         self.model.tool = 'rectangle_1'
 
-class circle_Button(Button):
+class Ellipse_Button(Button):
     def press(self):
         self.model.tool = 'circle_1'
 
@@ -144,3 +144,11 @@ class Eraser_Thickness_Button(Button):
     def press(self):
         self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
         self.model.eraser_size = self.eraser_size
+
+class Pen_Button(Button):
+    def press(self):
+        self.model.tool = 'draw'
+
+class Color_Select_Button(Button):
+    def press(self):
+        self.model.tool = 'draw'
