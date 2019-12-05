@@ -35,10 +35,10 @@ class Model:
         self.save = Save_Button(20,20,'Save.png',50,self)
         self.clear = Clear_Button(90,20,'Clear.png',50, self)
         self.erase = Erase_Button(160,20,'Erase.png',50, self, 'grey', self.eraser_size)
-        self.red = Color_Button(230,20,'Red.png',50, self, 'red', self.pen_size)
-        self.blue = Color_Button(300,20,'Blue.png',50, self,'blue', self.pen_size)
-        self.green = Color_Button(370,20,'Green.png',50, self,'green', self.pen_size)
-        self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
+        self.red = Thicknessess_Button(230,20,'Thickness.png',50, self, self.pen_size)
+        self.blue = Color_Button(300,20,'Blue.png',50, self, self.pen_size)
+        #self.green = Color_Button(370,20,'Green.png',50, self,'green', self.pen_size)
+        #self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
         self.shape = Shape_Button(580,20,'Shape.png',50, self)
         self.draw_thin = Thickness_Button(160,20,'Thin.png',50,self,2)
@@ -47,6 +47,7 @@ class Model:
         self.eraser_thin = Eraser_Thickness_Button(160,20,'Thin.png',50,self,2)
         self.eraser_medium = Eraser_Thickness_Button(300,20,'Medium.png',50,self,7)
         self.eraser_thick = Eraser_Thickness_Button(440,20,'Thick.png',50,self,15)
+        self.color_slider = Color_Slider(40,20,"ColorBar.png",42,500,self)
         self.rectangle = Rectangle_Button(160,20,'Rectangle.png',50,self)
         self.circle = circle_Button(440,20,'Ellipse.png',50,self)
         #self.exit = Exit_Button(650,20,'Exit.png',50, self)
@@ -68,12 +69,17 @@ class Model:
         if self.tool == 'shape':
             self.rectangle.check_pressed(cursor)
             self.circle.check_pressed(cursor)
-        self.clear.check_pressed(cursor)
+        if self.tool == 'color_slider':
+            self.color_slider.check_pressed(cursor)
+            # self.color_choice.check_pressed(cursor)
+
+###########################
+
         self.save.check_pressed(cursor)
         self.red.check_pressed(cursor)
         self.blue.check_pressed(cursor)
-        self.green.check_pressed(cursor)
-        self.black.check_pressed(cursor)
+        #self.green.check_pressed(cursor)
+        #self.black.check_pressed(cursor)
         #self.exit.check_pressed(cursor)
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
@@ -190,6 +196,8 @@ class View:
                 self.model.eraser_thin.display(self.model.frame)
                 self.model.eraser_medium.display(self.model.frame)
                 self.model.eraser_thick.display(self.model.frame)
+            elif self.model.tool == 'color_slider':
+                self.model.color_slider.display(self.model.frame)
             elif self.model.tool == 'shape':
                 self.model.rectangle.display(self.model.frame)
                 self.model.circle.display(self.model.frame)
@@ -198,8 +206,6 @@ class View:
                 self.model.clear.display(self.model.frame)
                 self.model.red.display(self.model.frame)
                 self.model.blue.display(self.model.frame)
-                self.model.green.display(self.model.frame)
-                self.model.black.display(self.model.frame)
                 self.model.erase.display(self.model.frame)
                 self.model.calibrate.display(self.model.frame)
                 self.model.shape.display(self.model.frame)

@@ -69,14 +69,14 @@ class Thicknessess_Button(Button):
     A class for adding a color button to the program. Inherets from Button class.
     Color buttons change the color of the users drawing.
     """
-    def __init__(self,x,y,path,size,model,color,pen_size):
+    def __init__(self,x,y,path,size,model,pen_size):
         super().__init__(x,y,path,size,model)
-        self.color = color
+        # self.color = color
         self.pen_size = pen_size
 
     def press(self):
         self.model.tool = 'thickness' #if color button is selected, change mode to thickness, line buttons will appear
-        self.model.line_color = self.color
+        # self.model.line_color = self.color
         self.model.pen_size = self.pen_size
 
 class Color_Button(Button):
@@ -84,14 +84,12 @@ class Color_Button(Button):
     A class for adding a color button to the program. Inherets from Button class.
     Color buttons change the color of the users drawing.
     """
-    def __init__(self,x,y,path,size,model,color,pen_size):
+    def __init__(self,x,y,path,size,model,pen_size):
         super().__init__(x,y,path,size,model)
-        self.color = color
         self.pen_size = pen_size
 
     def press(self):
         self.model.tool = 'color_slider' #if color button is selected, change mode to thickness, line buttons will appear
-        self.model.line_color = self.color
         self.model.pen_size = self.pen_size
 
 class Exit_Button(Button):
@@ -179,7 +177,8 @@ class Color_Slider():
 
     def check_pressed(self,cursor):
         if cursor:
-            if cursor[0] > self.x and cursor[0] < self.x + self.size and cursor[1] > self.y and cursor[1] < self.y + self.size:
+            if cursor[0] > self.x and cursor[0] < self.x + self.dx and cursor[1] > self.y and cursor[1] < self.y + self.dy:
+                # Color_Choice = HSV THINGS
                 if not self.pressed:
                     self.press()
                     self.pressed = True
