@@ -44,15 +44,7 @@ class Save_Button(Button):
         self.images_counter = 0
 
     def press(self):
-        #drawing = self.model.frame
-        #drawing = cv2.flip(drawing,1)
-        #for i in range(len(self.model.line_points)):
-        #    if i > 0 and self.model.line_points[i-1] and self.model.line_points[i]: # make sure both endpoints exist
-        #        if self.model.line_points[i][3] < 50: # check the velocity of the target to filter out false positives
-        #            cv2.line(drawing, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], 5)
-        #cv2.imwrite(os.path.dirname(__file__) + '/' + 'Drawing'+ str(self.images_counter) + '.png',drawing)
-        #self.images_counter += 1
-        pass
+        self.model.tool = 'save'
 
 class Clear_Button(Button):
     """
