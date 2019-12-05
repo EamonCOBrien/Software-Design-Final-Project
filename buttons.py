@@ -55,29 +55,8 @@ class Clear_Button(Button):
     def press(self):
         self.model.line_points.clear()
         self.model.line_points.append(False)
-
-class Color_Button(Button):
-    """
-    A class for adding a color button to the program. Inherits from Button class.
-    Color buttons change the color of the users drawing.
-    """
-    def __init__(self,x,y,path,size,model,color,pen_size):
-        super().__init__(x,y,path,size,model)
-        self.color = color
-        self.pen_size = pen_size
-
-    def press(self):
-        self.model.tool = 'thickness' #if color button is selected, change mode to thickness, line buttons will appear
-        self.model.line_color = self.color
-        self.model.pen_size = self.pen_size
-
-class Exit_Button(Button):
-    """
-    A class for adding an exit button to the program. Inherets from Button class.
-    The Exit button causes program to end.
-    """
-    def press(self):
-        self.model.tool = 'exit'
+        self.model.rectangle_points.clear()
+        self.model.circle_points.clear()
 
 class Erase_Button(Button):
     """
@@ -97,10 +76,6 @@ class Calibration_Button(Button):
     def press(self):
         self.model.tool = 'calibration color 1'
         self.model.calibration_start = time.time()
-
-class Shape_Button(Button):
-    def press(self):
-        self.model.tool = 'shape'
 
 class Rectangle_Button(Button):
     def press(self):

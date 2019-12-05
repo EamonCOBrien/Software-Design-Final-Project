@@ -32,7 +32,6 @@ class Model:
         self.line_color = 'black'
         self.tool = 'calibration color 1'
         self.shape_started = False
-        self.save = Save_Button(20, 20, 'Save.png', 50, self)
         self.clear = Clear_Button(90, 20, 'Clear.png', 50, self)
         self.erase = Erase_Button(160, 20, 'Erase.png', 50, self, 'grey', self.eraser_size)
         self.pen = Pen_Button(230, 20, 'Pen.png', 50, self)
@@ -40,6 +39,9 @@ class Model:
         self.rectangle = Rectangle_Button(370, 20, 'Rectangle.png', 50, self)
         self.ellipse = Ellipse_Button(440, 20, 'Ellipse.png', 50, self)
         self.calibrate = Calibration_Button(510, 20,'Calibrate.png', 50, self)
+        self.draw_thin = Thickness_Button(160,20,'Thin.png',50,self,2)
+        self.draw_medium = Thickness_Button(300,20,'Medium.png',50,self,7)
+        self.draw_thick = Thickness_Button(440,20,'Thick.png',50,self,15)
 
     def check_buttons(self, cursor):
         """
@@ -47,11 +49,12 @@ class Model:
         the area of any of the buttons.
         """
         if self.tool == 'thickness':
-            pass
+            self.draw_thin.check_pressed(cursor)
+            self.draw_medium.check_pressed(cursor)
+            self.draw_thick.check_pressed(cursor)
         self.rectangle.check_pressed(cursor)
         self.ellipse.check_pressed(cursor)
         self.clear.check_pressed(cursor)
-        self.save.check_pressed(cursor)
         self.erase.check_pressed(cursor)
         self.calibrate.check_pressed(cursor)
         self.color.check_pressed(cursor)
@@ -161,9 +164,10 @@ class View:
         if self.model.tool != 'calibration color 1' and self.model.tool != 'calibration color 2':
             cv2.rectangle(self.model.frame,(0,0),(self.model.frame.shape[1],90),(255,255,255),-1)
             if self.model.tool == 'thickness':
-                pass
+                self.model.draw_thin.display(self.model.frame)
+                self.model.draw_medium.display(self.model.frame)
+                self.model.draw_thick.display(self.model.frame)
             else:
-                self.model.save.display(self.model.frame)
                 self.model.clear.display(self.model.frame)
                 self.model.erase.display(self.model.frame)
                 self.model.calibrate.display(self.model.frame)
