@@ -62,28 +62,30 @@ class Model:
             self.draw_thin.check_pressed(cursor)
             self.draw_medium.check_pressed(cursor)
             self.draw_thick.check_pressed(cursor)
-        if self.tool == 'eraser_thickness':
+        elif self.tool == 'eraser_thickness':
             self.eraser_thin.check_pressed(cursor)
             self.eraser_medium.check_pressed(cursor)
             self.eraser_thick.check_pressed(cursor)
-        if self.tool == 'shape':
+        elif self.tool == 'shape':
             self.rectangle.check_pressed(cursor)
             self.circle.check_pressed(cursor)
-        if self.tool == 'color_slider':
+        elif self.tool == 'color_slider':
             self.color_slider.check_pressed(cursor)
             # self.color_choice.check_pressed(cursor)
 
 ###########################
 
-        self.save.check_pressed(cursor)
-        self.red.check_pressed(cursor)
-        self.blue.check_pressed(cursor)
+        else:
+
+            self.save.check_pressed(cursor)
+            self.red.check_pressed(cursor)
+            self.blue.check_pressed(cursor)
         #self.green.check_pressed(cursor)
         #self.black.check_pressed(cursor)
         #self.exit.check_pressed(cursor)
-        self.erase.check_pressed(cursor)
-        self.calibrate.check_pressed(cursor)
-        self.shape.check_pressed(cursor)
+            self.erase.check_pressed(cursor)
+            self.calibrate.check_pressed(cursor)
+            self.shape.check_pressed(cursor)
 
 class Controller:
     """

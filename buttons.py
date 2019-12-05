@@ -179,14 +179,29 @@ class Color_Slider():
         if cursor:
             if cursor[0] > self.x and cursor[0] < self.x + self.dx and cursor[1] > self.y and cursor[1] < self.y + self.dy:
                 # Color_Choice = HSV THINGS
+                # return Color_Choice
                 if not self.pressed:
-                    self.press()
                     self.pressed = True
             else: #Debounce
                 self.pressed = False
+
 
     def display(self,frame):
         for i in range(self.dx):
             for j in range(self.dy):
                 if self.icon[i,j][3] > 20:
                     frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
+class Color_Choice():
+    """
+    A class for adding a color button to the program. Inherets from Button class.
+    Color buttons change the color of the users drawing.
+    """
+    def __init__(self,x,y,size,model,pen_size):
+        super().__init__(x,y,path,size,model)
+        self.color = Color_Choice
+        self.pen_size = pen_size
+
+    def press(self):
+        self.model.tool = 'draw' #if color button is selected, change mode to thickness, line buttons will appear
+        self.model.line_color = self.color
+        self.model.pen_size = self.pen_size
