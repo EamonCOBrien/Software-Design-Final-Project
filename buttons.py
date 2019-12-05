@@ -58,7 +58,7 @@ class Clear_Button(Button):
 
 class Color_Button(Button):
     """
-    A class for adding a color button to the program. Inherets from Button class.
+    A class for adding a color button to the program. Inherits from Button class.
     Color buttons change the color of the users drawing.
     """
     def __init__(self,x,y,path,size,model,color,pen_size):
@@ -83,15 +83,12 @@ class Erase_Button(Button):
     """
     A class for adding an eraser button to the program.
     """
-    def __init__(self,x,y,path,size,model,color,eraser_size):
+    def __init__(self,x,y,path,size,model,color,pen_size):
         super().__init__(x,y,path,size,model)
-        self.color = color
-        self.eraser_size = eraser_size
+        self.pen_size = pen_size
 
     def press(self):
-        self.model.tool = 'eraser_thickness'
-        self.model.line_color = self.color
-        self.model.eraser_size = self.eraser_size
+        self.model.tool = 'erase'
 
 class Calibration_Button(Button):
     """
@@ -125,17 +122,18 @@ class Thickness_Button(Button):
         self.model.tool = 'draw' #if thickness button pressed, start drawing again
         self.model.pen_size = self.pen_size
 
-class Eraser_Thickness_Button(Button):
-    """
-    A class for changing the thickness of the eraser.
-    """
-    def __init__(self,x,y,path,size,model,eraser_size):
-        super().__init__(x,y,path,size,model)
-        self.eraser_size = eraser_size
 
-    def press(self):
-        self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
-        self.model.eraser_size = self.eraser_size
+# class Eraser_Thickness_Button(Button):
+#     """
+#     A class for changing the thickness of the eraser.
+#     """
+#     def __init__(self,x,y,path,size,model,eraser_size):
+#         super().__init__(x,y,path,size,model)
+#         self.eraser_size = eraser_size
+#
+#     def press(self):
+#         self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
+#         self.model.eraser_size = self.eraser_size
 
 class Pen_Button(Button):
     def press(self):
