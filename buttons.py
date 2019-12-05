@@ -64,7 +64,7 @@ class Clear_Button(Button):
         self.model.line_points.clear()
         self.model.line_points.append(False)
 
-class Color_Button(Button):
+class Thicknessess_Button(Button):
     """
     A class for adding a color button to the program. Inherets from Button class.
     Color buttons change the color of the users drawing.
@@ -76,6 +76,21 @@ class Color_Button(Button):
 
     def press(self):
         self.model.tool = 'thickness' #if color button is selected, change mode to thickness, line buttons will appear
+        self.model.line_color = self.color
+        self.model.pen_size = self.pen_size
+
+class Color_Button(Button):
+    """
+    A class for adding a color button to the program. Inherets from Button class.
+    Color buttons change the color of the users drawing.
+    """
+    def __init__(self,x,y,path,size,model,color,pen_size):
+        super().__init__(x,y,path,size,model)
+        self.color = color
+        self.pen_size = pen_size
+
+    def press(self):
+        self.model.tool = 'color_slider' #if color button is selected, change mode to thickness, line buttons will appear
         self.model.line_color = self.color
         self.model.pen_size = self.pen_size
 
@@ -144,3 +159,35 @@ class Eraser_Thickness_Button(Button):
     def press(self):
         self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
         self.model.eraser_size = self.eraser_size
+
+
+
+class Color_Slider():
+    """
+    A class for a color slider that allows the user to select a color.
+    x and y describe the location of the upper left corner of the button.
+    """
+    def __init__(self,x,y,path,dx,dy,model,pressed = False):
+        self.x = x
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+        self.path = path
+        self.pressed = pressed
+        self.model = model
+        self.icon = cv2.imread(os.path.dirname(__file__) + '/Icons/' + path, -1)
+
+    def check_pressed(self,cursor):
+        if cursor:
+            if cursor[0] > self.x and cursor[0] < self.x + self.size and cursor[1] > self.y and cursor[1] < self.y + self.size:
+                if not self.pressed:
+                    self.press()
+                    self.pressed = True
+            else: #Debounce
+                self.pressed = False
+
+    def display(self,frame):
+        for i in range(self.dx):
+            for j in range(self.dy):
+                if self.icon[i,j][3] > 20:
+                    frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
