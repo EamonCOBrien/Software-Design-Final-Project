@@ -161,9 +161,6 @@ class Color_Choice(Button):
         self.model.tool = 'draw' #if eraser thickness button pressed, start erasing again
         self.model.line_color = self.rgbcolor
 
-    #def update(self,color):
-        #self.color = color #colorsys.hsv_to_rgb(color,255,50)
-
     def display(self,frame):
         color = self.color
         #print("hsv",color)
