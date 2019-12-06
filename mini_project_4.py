@@ -28,12 +28,12 @@ class Model:
         self.cursor_2 = ()
         self.pen_size = 7
         self.eraser_size = 8
-        #self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
+        # self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
         self.line_color = (0,0,0)
         self.tool = 'calibration color 1'
         self.shape_started = False
         self.clear = Clear_Button(20,20,'Clear.png',50, self)
-        self.erase = Erase_Button(90,20,'Erase.png',50, self, 'grey', self.eraser_size)
+        self.erase = Erase_Button(90,20,'Erase.png',50, self)
         self.pen = Pen_Button(160,20,'Pen.png',50,self)
         self.thicknessess = Thicknessess_Button(230,20,'Thickness.png',50, self, self.pen_size)
         self.color = Color_Button(300,20,'Color.png',50, self)
@@ -58,12 +58,13 @@ class Model:
             self.draw_thick.check_pressed(cursor)
         elif self.tool == 'color_slider':
             self.color_slider.check_pressed(cursor)
-            if self.color_slider.pressed:
-                # print(self.color_slider.selected)
-                self.color_choice.update(self.color_slider.selected)
+            # if self.color_slider.pressed:
+            #     # print(self.color_slider.selected)
+                # self.color_choice.update(self.color_slider.selected)
             self.color_choice.check_pressed(cursor)
         else:
             self.thicknessess.check_pressed(cursor)
+            self.clear.check_pressed(cursor)
             self.color.check_pressed(cursor)
             self.rectangle.check_pressed(cursor)
             self.ellipse.check_pressed(cursor)
@@ -156,7 +157,8 @@ class View:
         """
         for i in range(len(self.model.circle_points)):
             if i > 0 and self.model.circle_points[i-1] and self.model.circle_points[i]: # make sure both endpoints exist
-                cv2.circle(self.model.frame, self.model.circle_points[i-1][0:2], self.model.circle_points[i], self.model.circle_points[i-1][2], self.model.circle_points[i-1][-1])
+                if self.model.circle_points[i-1][2]:
+                    cv2.circle(self.model.frame, self.model.circle_points[i-1][0:2], self.model.circle_points[i], self.model.circle_points[i-1][2], self.model.circle_points[i-1][-1])
 
     def remove_lines(self):
         if self.model.cursor_1 and self.model.line_points:
@@ -258,7 +260,7 @@ def process_frame(model, controller, view):
     elif model.tool == 'circle_2':
         if model.cursor_1:
             radius = int(((model.circle_points[-1][0]-model.cursor_1[0])**2 + (model.circle_points[-1][1]-model.cursor_1[1])**2)**(1/2))
-            cv2.circle(model.frame, model.circle_points[-1][0:2], radius,model.circle_points[-1][2], model.circle_points[-1][-1])
+            cv2.circle(model.frame, model.circle_points[-1][0:2], radius, model.circle_points[-1][2], model.circle_points[-1][-1])
         elif model.cursor_2:
             radius = int(((model.circle_points[-1][0]-model.cursor_2[0])**2 + (model.circle_points[-1][1]-model.cursor_2[1])**2)**(1/2))
             model.circle_points.append(radius)

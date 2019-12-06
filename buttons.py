@@ -78,10 +78,6 @@ class Erase_Button(Button):
     """
     A class for adding an eraser button to the program.
     """
-    def __init__(self,x,y,path,size,model,color,pen_size):
-        super().__init__(x,y,path,size,model)
-        self.pen_size = pen_size
-
     def press(self):
         self.model.tool = 'erase'
 
@@ -133,11 +129,15 @@ class Color_Slider():
         self.icon = cv2.imread(os.path.dirname(__file__) + '/Icons/' + path, -1)
         self.selected = (0,255,0)
 
+
     def check_pressed(self,cursor):
         if cursor:
             if cursor[0] > self.x+10 and cursor[0] < self.x+10 + self.dx and cursor[1] > self.y and cursor[1] < self.y + self.dy:
                 Color_Choice = ((cursor[0]-self.x-10)/499) # 1-499
-                self.selected = Color_Choice
+                # self.selected = Color_Choice
+                bgrcolor = [i * 255 for i in colorsys.hsv_to_rgb(Color_Choice, 1, 1)]
+                rgbcolor = (bgrcolor[2],bgrcolor[1],bgrcolor[0])
+                self.model.line_color = rgbcolor
                 self.pressed=True
 
             else:
@@ -159,15 +159,12 @@ class Color_Choice(Button):
     """
     def press(self):
         self.model.tool = 'draw' #if eraser thickness button pressed, start erasing again
-        self.model.line_color = self.rgbcolor
+
 
     def display(self,frame):
-        color = self.color
         #print("hsv",color)
-        bgrcolor = [i * 255 for i in colorsys.hsv_to_rgb(color, 1, .50)]
-        self.rgbcolor = (bgrcolor[2],bgrcolor[1],bgrcolor[0])
         #print("rgb",self.rgbcolor)
-        cv2.rectangle(self.model.frame,(self.x,self.y),(self.x+self.size,self.y+self.size), line_color,-1)
+        cv2.rectangle(self.model.frame,(self.x,self.y),(self.x+self.size,self.y+self.size), self.model.line_color,-1)
         for i in range(self.size):
             for j in range(self.size):
                 if self.icon[i,j][3] > 20:
