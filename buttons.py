@@ -61,31 +61,18 @@ class Clear_Button(Button):
 
 class Thicknessess_Button(Button):
     """
-    A class for adding a color button to the program. Inherets from Button class.
-    Color buttons change the color of the users drawing.
+    THe button that lets you choose a thickness
     """
-    def __init__(self,x,y,path,size,model,pen_size):
-        super().__init__(x,y,path,size,model)
-        # self.color = color
-        self.pen_size = pen_size
-
     def press(self):
-        self.model.tool = 'thickness' #if color button is selected, change mode to thickness, line buttons will appear
-        # self.model.line_color = self.color
-        self.model.pen_size = self.pen_size
+        self.model.tool = 'thickness'
 
 class Color_Button(Button):
     """
     A class for adding a color button to the program. Inherets from Button class.
     Color buttons change the color of the users drawing.
     """
-    def __init__(self,x,y,path,size,model,pen_size):
-        super().__init__(x,y,path,size,model)
-        self.pen_size = pen_size
-
     def press(self):
         self.model.tool = 'color_slider' #if color button is selected, change mode to thickness, line buttons will appear
-        self.model.pen_size = self.pen_size
 
 class Erase_Button(Button):
     """
@@ -130,13 +117,6 @@ class Pen_Button(Button):
     def press(self):
         self.model.tool = 'draw'
 
-class Color_Select_Button(Button):
-    def press(self):
-        self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
-        self.model.eraser_size = self.eraser_size
-
-
-
 class Color_Slider():
     """
     A class for a color slider that allows the user to select a color.
@@ -172,37 +152,17 @@ class Color_Slider():
             for j in range(self.dx):
                 if self.icon[i,j][3] > 20:
                     frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
-class Color_Choice():
+class Color_Choice(Button):
     """
     A class for adding a color button to the program. Inherets from Button class.
     Color buttons change the color of the users drawing.
     """
-    def __init__(self,x,y,size,model,color,pressed = False):
-        self.x = x
-        self.y = y
-        self.size = size
-        self.pressed = pressed
-        self.model = model
-        self.color = color #colorsys.hsv_to_rgb(color,255,50)
-
-    def check_pressed(self,cursor):
-        if cursor:
-            if cursor[0] > self.x and cursor[0] < self.x + self.size and cursor[1] > self.y and cursor[1] < self.y + self.size:
-                if not self.pressed:
-                    self.press()
-                    self.pressed = True
-            else: #Debounce
-                self.pressed = False
-
     def press(self):
         self.model.tool = 'draw' #if eraser thickness button pressed, start erasing again
-        self.model.line_colors["chosen_color"] = self.rgbcolor
-        self.model.line_color = "chosen_color"
+        self.model.line_color = self.rgbcolor
 
-
-    def update(self,color):
-        self.color = color #colorsys.hsv_to_rgb(color,255,50)
-
+    #def update(self,color):
+        #self.color = color #colorsys.hsv_to_rgb(color,255,50)
 
     def display(self,frame):
         color = self.color
@@ -210,4 +170,8 @@ class Color_Choice():
         bgrcolor = [i * 255 for i in colorsys.hsv_to_rgb(color, 1, .50)]
         self.rgbcolor = (bgrcolor[2],bgrcolor[1],bgrcolor[0])
         #print("rgb",self.rgbcolor)
-        cv2.rectangle(self.model.frame,(self.x,self.y),(self.x+self.size,self.y+self.size), self.rgbcolor,-1)
+        cv2.rectangle(self.model.frame,(self.x,self.y),(self.x+self.size,self.y+self.size), line_color,-1)
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.icon[i,j][3] > 20:
+                    frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
