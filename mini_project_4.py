@@ -44,7 +44,7 @@ class Model:
         self.draw_thin = Thickness_Button(160,200,'Thin.png',50,self,2)
         self.draw_medium = Thickness_Button(300,200,'Medium.png',50,self,7)
         self.draw_thick = Thickness_Button(440,200,'Thick.png',50,self,15)
-        self.color_slider = Color_Slider(40,200,"ColorBar.png",42,500,self)
+        self.color_slider = Color_Slider(40,205,"ColorBar.png",42,500,self)
         self.color_choice = Color_Choice(540,200, 'Check.png', 50, self)
 
     def check_buttons(self, cursor):
