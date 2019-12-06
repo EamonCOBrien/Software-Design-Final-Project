@@ -32,27 +32,20 @@ class Model:
         self.line_color = 'black'
         self.tool = 'calibration color 1'
         self.shape_started = False
-        self.save = Save_Button(20,20,'Save.png',50,self)
-        self.clear = Clear_Button(90,20,'Clear.png',50, self)
-        self.erase = Erase_Button(160,20,'Erase.png',50, self, 'grey', self.eraser_size)
+        self.clear = Clear_Button(20,20,'Clear.png',50, self)
+        self.erase = Erase_Button(90,20,'Erase.png',50, self, 'grey', self.eraser_size)
+        self.pen = Pen_Button(160,20,'Pen.png',50,self)
         self.thicknessess = Thicknessess_Button(230,20,'Thickness.png',50, self, self.pen_size)
-        self.color = Color_Button(300,20,'Blue.png',50, self, self.pen_size)
-        #self.green = Color_Button(370,20,'Green.png',50, self,'green', self.pen_size)
-        #self.black = Color_Button(440,20,'Black.png',50, self,'black', self.pen_size)
+        self.color = Color_Button(300,20,'Color.png',50, self, self.pen_size)
+        self.rectangle = Rectangle_Button(370,20,'Rectangle.png',50,self)
+        self.ellipse = Ellipse_Button(440,20,'Ellipse.png',50,self)
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
-        self.shape = Shape_Button(580,20,'Shape.png',50, self)
+
         self.draw_thin = Thickness_Button(160,200,'Thin.png',50,self,2)
         self.draw_medium = Thickness_Button(300,200,'Medium.png',50,self,7)
         self.draw_thick = Thickness_Button(440,200,'Thick.png',50,self,15)
-        self.eraser_thin = Eraser_Thickness_Button(160,200,'Thin.png',50,self,2)
-        self.eraser_medium = Eraser_Thickness_Button(300,200,'Medium.png',50,self,7)
-        self.eraser_thick = Eraser_Thickness_Button(440,200,'Thick.png',50,self,15)
         self.color_slider = Color_Slider(40,200,"ColorBar.png",42,500,self)
         self.color_choice = Color_Choice(540,200,50,self,0)
-        self.rectangle = Rectangle_Button(160,20,'Rectangle.png',50,self)
-        self.circle = circle_Button(440,20,'Ellipse.png',50,self)
-        #self.exit = Exit_Button(650,20,'Exit.png',50, self)
-
 
     def check_buttons(self, cursor):
         """
@@ -63,33 +56,20 @@ class Model:
             self.draw_thin.check_pressed(cursor)
             self.draw_medium.check_pressed(cursor)
             self.draw_thick.check_pressed(cursor)
-        elif self.tool == 'eraser_thickness':
-            self.eraser_thin.check_pressed(cursor)
-            self.eraser_medium.check_pressed(cursor)
-            self.eraser_thick.check_pressed(cursor)
-        elif self.tool == 'shape':
-            self.rectangle.check_pressed(cursor)
-            self.circle.check_pressed(cursor)
         elif self.tool == 'color_slider':
             self.color_slider.check_pressed(cursor)
             if self.color_slider.pressed:
                 # print(self.color_slider.selected)
                 self.color_choice.update(self.color_slider.selected)
             self.color_choice.check_pressed(cursor)
-
-###########################
-
         else:
-
-            self.save.check_pressed(cursor)
             self.thicknessess.check_pressed(cursor)
             self.color.check_pressed(cursor)
-        #self.green.check_pressed(cursor)
-        #self.black.check_pressed(cursor)
-        #self.exit.check_pressed(cursor)
+            self.rectangle.check_pressed(cursor)
+            self.ellipse.check_pressed(cursor)
             self.erase.check_pressed(cursor)
             self.calibrate.check_pressed(cursor)
-            self.shape.check_pressed(cursor)
+            self.pen.check_pressed(cursor)
 
 class Controller:
     """
@@ -198,16 +178,9 @@ class View:
                 self.model.draw_thin.display(self.model.frame)
                 self.model.draw_medium.display(self.model.frame)
                 self.model.draw_thick.display(self.model.frame)
-            elif self.model.tool == 'eraser_thickness':
-                self.model.eraser_thin.display(self.model.frame)
-                self.model.eraser_medium.display(self.model.frame)
-                self.model.eraser_thick.display(self.model.frame)
             elif self.model.tool == 'color_slider':
                 self.model.color_slider.display(self.model.frame)
                 self.model.color_choice.display(self.model.frame)
-            elif self.model.tool == 'shape':
-                self.model.rectangle.display(self.model.frame)
-                self.model.circle.display(self.model.frame)
             else:
                 self.model.clear.display(self.model.frame)
                 self.model.thicknessess.display(self.model.frame)

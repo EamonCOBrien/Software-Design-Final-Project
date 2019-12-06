@@ -206,8 +206,8 @@ class Color_Choice():
 
     def display(self,frame):
         color = self.color
-        print("hsv",color)
+        #print("hsv",color)
         bgrcolor = [i * 255 for i in colorsys.hsv_to_rgb(color, 1, .50)]
         self.rgbcolor = (bgrcolor[2],bgrcolor[1],bgrcolor[0])
-        print("rgb",self.rgbcolor)
+        #print("rgb",self.rgbcolor)
         cv2.rectangle(self.model.frame,(self.x,self.y),(self.x+self.size,self.y+self.size), self.rgbcolor,-1)
