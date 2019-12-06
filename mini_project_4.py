@@ -36,7 +36,7 @@ class Model:
         self.erase = Erase_Button(90,20,'Erase.png',50, self, 'grey', self.eraser_size)
         self.pen = Pen_Button(160,20,'Pen.png',50,self)
         self.thicknessess = Thicknessess_Button(230,20,'Thickness.png',50, self, self.pen_size)
-        self.color = Color_Button(300,20,'Color.png',50, self, self.pen_size)
+        self.color = Color_Button(300,20,'Color.png',50, self)
         self.rectangle = Rectangle_Button(370,20,'Rectangle.png',50,self)
         self.ellipse = Ellipse_Button(440,20,'Ellipse.png',50,self)
         self.calibrate = Calibration_Button(510,20,'Calibrate.png',50, self)
@@ -45,7 +45,7 @@ class Model:
         self.draw_medium = Thickness_Button(300,200,'Medium.png',50,self,7)
         self.draw_thick = Thickness_Button(440,200,'Thick.png',50,self,15)
         self.color_slider = Color_Slider(40,200,"ColorBar.png",42,500,self)
-        self.color_choice = Color_Choice(540,200,50,self,0)
+        self.color_choice = Color_Choice(540,200, 'Check.png', 50, self)
 
     def check_buttons(self, cursor):
         """
