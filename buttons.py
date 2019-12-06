@@ -45,15 +45,7 @@ class Save_Button(Button):
         self.images_counter = 0
 
     def press(self):
-        #drawing = self.model.frame
-        #drawing = cv2.flip(drawing,1)
-        #for i in range(len(self.model.line_points)):
-        #    if i > 0 and self.model.line_points[i-1] and self.model.line_points[i]: # make sure both endpoints exist
-        #        if self.model.line_points[i][3] < 50: # check the velocity of the target to filter out false positives
-        #            cv2.line(drawing, self.model.line_points[i-1][0:2], self.model.line_points[i][0:2], self.model.line_colors[self.model.line_points[i][2]], 5)
-        #cv2.imwrite(os.path.dirname(__file__) + '/' + 'Drawing'+ str(self.images_counter) + '.png',drawing)
-        #self.images_counter += 1
-        pass
+        self.model.tool = 'save'
 
 class Clear_Button(Button):
     """
@@ -64,6 +56,7 @@ class Clear_Button(Button):
     def press(self):
         self.model.line_points.clear()
         self.model.line_points.append(False)
+<<<<<<< HEAD
 
 class Thicknessess_Button(Button):
     """
@@ -100,20 +93,21 @@ class Exit_Button(Button):
     """
     def press(self):
         self.model.tool = 'exit'
+=======
+        self.model.rectangle_points.clear()
+        self.model.circle_points.clear()
+>>>>>>> 6b95bd81c79aba3ffdfeea73e9a3657a00dd31f0
 
 class Erase_Button(Button):
     """
     A class for adding an eraser button to the program.
     """
-    def __init__(self,x,y,path,size,model,color,eraser_size):
+    def __init__(self,x,y,path,size,model,color,pen_size):
         super().__init__(x,y,path,size,model)
-        self.color = color
-        self.eraser_size = eraser_size
+        self.pen_size = pen_size
 
     def press(self):
-        self.model.tool = 'eraser_thickness'
-        self.model.line_color = self.color
-        self.model.eraser_size = self.eraser_size
+        self.model.tool = 'erase'
 
 class Calibration_Button(Button):
     """
@@ -123,15 +117,11 @@ class Calibration_Button(Button):
         self.model.tool = 'calibration color 1'
         self.model.calibration_start = time.time()
 
-class Shape_Button(Button):
-    def press(self):
-        self.model.tool = 'shape'
-
 class Rectangle_Button(Button):
     def press(self):
         self.model.tool = 'rectangle_1'
 
-class circle_Button(Button):
+class Ellipse_Button(Button):
     def press(self):
         self.model.tool = 'circle_1'
 
@@ -147,15 +137,26 @@ class Thickness_Button(Button):
         self.model.tool = 'draw' #if thickness button pressed, start drawing again
         self.model.pen_size = self.pen_size
 
-class Eraser_Thickness_Button(Button):
-    """
-    A class for changing the thickness of the eraser.
-    """
-    def __init__(self,x,y,path,size,model,eraser_size):
-        super().__init__(x,y,path,size,model)
-        self.eraser_size = eraser_size
 
+# class Eraser_Thickness_Button(Button):
+#     """
+#     A class for changing the thickness of the eraser.
+#     """
+#     def __init__(self,x,y,path,size,model,eraser_size):
+#         super().__init__(x,y,path,size,model)
+#         self.eraser_size = eraser_size
+#
+#     def press(self):
+#         self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
+#         self.model.eraser_size = self.eraser_size
+
+class Pen_Button(Button):
     def press(self):
+        self.model.tool = 'draw'
+
+class Color_Select_Button(Button):
+    def press(self):
+<<<<<<< HEAD
         self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
         self.model.eraser_size = self.eraser_size
 
@@ -235,3 +236,6 @@ class Color_Choice():
         self.rgbcolor = (bgrcolor[2],bgrcolor[1],bgrcolor[0])
         print("rgb",self.rgbcolor)
         cv2.rectangle(self.model.frame,(self.x,self.y),(self.x+self.size,self.y+self.size), self.rgbcolor,-1)
+=======
+        self.model.tool = 'draw'
+>>>>>>> 6b95bd81c79aba3ffdfeea73e9a3657a00dd31f0

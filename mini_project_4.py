@@ -209,19 +209,27 @@ class View:
                 self.model.rectangle.display(self.model.frame)
                 self.model.circle.display(self.model.frame)
             else:
-                self.model.save.display(self.model.frame)
                 self.model.clear.display(self.model.frame)
                 self.model.thicknessess.display(self.model.frame)
                 self.model.color.display(self.model.frame)
                 self.model.erase.display(self.model.frame)
                 self.model.calibrate.display(self.model.frame)
-                self.model.shape.display(self.model.frame)
+                self.model.color.display(self.model.frame)
+                self.model.pen.display(self.model.frame)
+                self.model.ellipse.display(self.model.frame)
+                self.model.rectangle.display(self.model.frame)
 
     def show_cursor(self):
-        if self.model.cursor_1: #drawing cursor
-            cv2.circle(self.model.frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
-        if self.model.cursor_2: #selecting cursor
-            cv2.circle(self.model.frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
+        if self.model.tool == 'erase':
+            if self.model.cursor_1: #drawing cursor
+                cv2.circle(self.model.frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,self.model.line_colors['grey'], thickness = 2)
+            if self.model.cursor_2: #selecting cursor
+                cv2.circle(self.model.frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),self.model.pen_size,self.model.line_colors['grey'], thickness = 2)
+        else:
+            if self.model.cursor_1: #drawing cursor
+                cv2.circle(self.model.frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
+            if self.model.cursor_2: #selecting cursor
+                cv2.circle(self.model.frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),self.model.pen_size,self.model.line_colors[self.model.line_color], thickness = 2)
 
 def process_frame(model, controller, view):
     model.frame = cv2.flip(model.frame,1) # reverse the frame so people aren't confused

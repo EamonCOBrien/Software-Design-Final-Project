@@ -11,38 +11,69 @@
     background: url("https://images4.alphacoders.com/795/thumb-1920-79578.png");
     background-size:cover;
   }
+  .content_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .topnav {
+    overflow: hidden;
+    background-color: white; /* #333 */
+  }
+  .topnav a {
+    float: left;
+    color: black; /*#f2f2f2;*/
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .topnav b {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+    transition: 0.6s;
+  }
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  .button {
+    background-color: #f4511e;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 4px 2px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .button:hover {opacity: 1}
   </style>
-    <title>
-        Rules
-    </title>
+    <title>Rules</title>
+    <link rel="icon" href="static/Wand.png"></link>
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">CVPaint</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/intro">Introduction</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/story">Evolution</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/rules">How to Play</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="/draw">Start</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<div class="topnav">
+  <!-- <img class="card-img" src="static/Wand.png" alt="Wand" style="width:5%"> -->
+  <b href="#"><img src="static/Wand.png" alt="Wand" style="width:7%"> CVPaint</b>
+  <a href="/">Home</a>
+  <a href="/intro">Introduction</a>
+  <a href="/story">Evolution</a>
+  <a class="active" href="/rules">How To Play</a>
+  <a href="/draw">Start</a>
+</div>
 
 <div class="header-bg">
   <div>
@@ -55,16 +86,55 @@
 <div class="container" text-justify>
   <body>
     <br>
+    <p> Our code doesn't work on heroku perfectly yet and we believe it will take
+      more skill and more time than we currently have to make our webapp quickly
+      access and process the camera feed. As a result, all the instructions for
+      downloading and using our program is detailed below. </p>
+    <p> First, list all the things they need on their computer and at home to
+      use the program. link to github likely, how to choose wand, possibly something else.
+
+    <p> Then, talk about choosing a wand and offer the stl file to print.
+      To get the most out of your CVPaint experience, you will need a magic wand.
+      Luckily, anything with two differently colored sides can be used as a wand.
+      This includes two sticky notes back to back(possibly with a pencil)
+      [insert image or slide show or hover images],
+      a ping pong paddle, even a phone will do in a pinch. If you have access to
+      a 3D printer we definitely recommend printing your very own "Magic Wand" and
+      coloring both sides. You can use paint, paper, sharpies and more to do so.
+      We do not recommend choosing colors that are too similar to your skin color
+      or clothing color as it confuses the program.
+    <p> Tips and tricks for starting the program, what to do if something doesn't work </p>
+    <br>
     <p> This is where we're going to write the rules and instructions for using our program... </p>
+    <p> To start the program, you must click the rightmost tab labeled Start.
+      [small image of webpage with start tab circled and an arrow pointed at it]
+      You will then be directed to the calibration screen. Follow the instructions on
+      the screen asking you to hold the first side of your wand in the circle. After
+      5 seconds the program will capture and save the color of whatever is in the
+      circle at that time. Then do the same for the second side of your wand. This
+      will determine which side of the wand is the selector, and which is the (drawer)
+      [Insert calibration page here]
     <p> We'll talk about all the cool gadgets you can use. </p>
-    <p> How there are 2 cursors, 'draw' and 'select'. </p>
-    <p> Fun pictures and maybe even videos on how to select and draw and use all the gadgets we gave you. </p>
-    <p> What you can use as a drawing wand and why. As well as attaching an STL file of the wand we use so that anyone can 3D print their own MAGIC WAND. </p>
-    <a href="static/Luna_2_2.STL" download="Magic Wand STL">
-      <img src="static/Wand.png" alt="Wand STL">
-      <p>Click image for wand STL</p>
-      <!-- <p class="text-center">Click wand for wand STL</p> -->
-    </a>
+    <p> After calibration, you can start exploring and drawing whatever you wish.
+      The tools on the top of your screen are as follows. (list tools)
+      [Insert screen with tools labeled]
+      There are 2 cursors that you can use. the selector and the drawer.
+      To use each tool, you must first select it with the selector side of your wand.
+      (side 1?). Then you can flip the wand and use the tool with your second cursor.
+      Secondary options may appear...?
+    <p> List what each tool does and how to use it. Include fun pictures and maybe
+      even videos on how to select and draw and use all the gadgets we gave you. </p>
+    <div class="content_center">
+      <img src="static/MagicWand.png" alt="Wand STL" style="width:320px">
+      <br>
+    </div>
+    <div class="content_center">
+      <a href="static/Wand.stl" download="Magic Wand STL">
+        <button class="button">Click to download Magic Wand STL</button>
+        <!-- <p>Click to download Magic Wand STL</p> -->
+        <!-- <p class="text-center">Click wand for wand STL</p> -->
+      </a>
+    </div>
     <p> And finally we'll talk about how to save and exit. As well as how to ask us questions, collaborate with us, and send better coding ideas. We'll probably attach the real code somewhere, along with instructions on how to use and run it in Ubuntu. </p>
   </body>
 
