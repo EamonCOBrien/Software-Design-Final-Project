@@ -196,8 +196,8 @@ class Color_Choice():
 
     def press(self):
         self.model.tool = 'draw' #if eraser thickness button pressed, start erasing again
-        self.model.line_colors["chosen_color"] = self.rgbcolor
-        self.model.line_color = "chosen_color"
+        self.model.line_color = self.rgbcolor
+        # self.model.line_color = "chosen_color"
 
 
     def update(self,color):
