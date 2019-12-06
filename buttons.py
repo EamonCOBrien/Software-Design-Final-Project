@@ -100,18 +100,6 @@ class Thickness_Button(Button):
         self.model.tool = 'draw' #if thickness button pressed, start drawing again
         self.model.pen_size = self.pen_size
 
-class Eraser_Thickness_Button(Button):
-    """
-    A class for changing the thickness of the eraser.
-    """
-    def __init__(self,x,y,path,size,model,eraser_size):
-        super().__init__(x,y,path,size,model)
-        self.eraser_size = eraser_size
-
-    def press(self):
-        self.model.tool = 'erase' #if eraser thickness button pressed, start erasing again
-        self.model.eraser_size = self.eraser_size
-
 class Pen_Button(Button):
     def press(self):
         self.model.tool = 'draw'
