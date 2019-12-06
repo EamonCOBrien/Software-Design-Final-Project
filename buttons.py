@@ -3,6 +3,7 @@ import time
 import imutils
 import os
 import cv2
+import colorsys
 
 class Button:
     """
@@ -165,7 +166,7 @@ class Color_Slider():
     A class for a color slider that allows the user to select a color.
     x and y describe the location of the upper left corner of the button.
     """
-    def __init__(self,x,y,path,dx,dy,model,pressed = False):
+    def __init__(self,x,y,path,dy,dx,model,pressed = False):
         self.x = x
         self.y = y
         self.dx = dx
@@ -174,21 +175,25 @@ class Color_Slider():
         self.pressed = pressed
         self.model = model
         self.icon = cv2.imread(os.path.dirname(__file__) + '/Icons/' + path, -1)
+        self.selected = (0,255,0)
 
     def check_pressed(self,cursor):
         if cursor:
-            if cursor[0] > self.x and cursor[0] < self.x + self.dx and cursor[1] > self.y and cursor[1] < self.y + self.dy:
-                # Color_Choice = HSV THINGS
-                # return Color_Choice
-                if not self.pressed:
-                    self.pressed = True
-            else: #Debounce
-                self.pressed = False
+            if cursor[0] > self.x+10 and cursor[0] < self.x+10 + self.dx and cursor[1] > self.y and cursor[1] < self.y + self.dy:
+                Color_Choice = ((cursor[0]-self.x-10)/499) # 1-499
+                self.selected = Color_Choice
+                self.pressed=True
 
+            else:
+                self.pressed = False
+                # if not self.pressed:
+                #     self.pressed = True
+                # else: #Debounce
+                #     self.pressed = False
 
     def display(self,frame):
-        for i in range(self.dx):
-            for j in range(self.dy):
+        for i in range(self.dy):
+            for j in range(self.dx):
                 if self.icon[i,j][3] > 20:
                     frame[self.y+i,self.x+j] = self.icon[i,j][0:-1]
 class Color_Choice():
@@ -196,12 +201,37 @@ class Color_Choice():
     A class for adding a color button to the program. Inherets from Button class.
     Color buttons change the color of the users drawing.
     """
-    def __init__(self,x,y,size,model,pen_size):
-        super().__init__(x,y,path,size,model)
-        self.color = Color_Choice
-        self.pen_size = pen_size
+    def __init__(self,x,y,size,model,color,pressed = False):
+        self.x = x
+        self.y = y
+        self.size = size
+        self.pressed = pressed
+        self.model = model
+        self.color = color #colorsys.hsv_to_rgb(color,255,50)
+
+    def check_pressed(self,cursor):
+        if cursor:
+            if cursor[0] > self.x and cursor[0] < self.x + self.size and cursor[1] > self.y and cursor[1] < self.y + self.size:
+                if not self.pressed:
+                    self.press()
+                    self.pressed = True
+            else: #Debounce
+                self.pressed = False
 
     def press(self):
-        self.model.tool = 'draw' #if color button is selected, change mode to thickness, line buttons will appear
-        self.model.line_color = self.color
-        self.model.pen_size = self.pen_size
+        self.model.tool = 'draw' #if eraser thickness button pressed, start erasing again
+        self.model.line_colors["chosen_color"] = self.rgbcolor
+        self.model.line_color = "chosen_color"
+
+
+    def update(self,color):
+        self.color = color #colorsys.hsv_to_rgb(color,255,50)
+
+
+    def display(self,frame):
+        color = self.color
+        print("hsv",color)
+        bgrcolor = [i * 255 for i in colorsys.hsv_to_rgb(color, 1, .50)]
+        self.rgbcolor = (bgrcolor[2],bgrcolor[1],bgrcolor[0])
+        print("rgb",self.rgbcolor)
+        cv2.rectangle(self.model.frame,(self.x,self.y),(self.x+self.size,self.y+self.size), self.rgbcolor,-1)
