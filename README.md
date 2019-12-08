@@ -1,25 +1,22 @@
 # Software-Design-Final-Project
 
-CVPaint: CVPaint is a fun, artistic, and interactive program that anyone, anywhere can use and enjoy.
-
-CVPaint is a web app that uses openCV, flask, and heroku to allow a user to "paint" on their computer screen through their camera using a colored "wand". The wand can be any colored object that constrasts with the background. This is because our program uses color tracking through openCV to identify the location of the "wand" and then use the tracking information to draw on th sreen.
+CVPaint is a web app that uses openCV to allow a user to draw on their computer screen through their camera.
 
 Authors: Eamon O'Brien, Gail Romer, Cali Wierzbanowski
-References: 
 
-Instructions: The entire program is contained in a global web app. It can be accessed at the url: https://drawing-program-demo.herokuapp.com/. Computer must have access to a camera. Further instructions are linked on the website.
+## Instructions:
 
-Usage: If you prefer to download the code and run it locally, here's how: 
-1) Git clone Software-Design-Final-Project from github and run mini_project_4.py.
+CVPaint runs on a browser, hosted on your device. Follow these steps to access it.
 
-2) To install packages, run:
+1) Clone the repository into a folder on your device: git clone https://github.com/EamonCOBrien/Software-Design-Final-Project.git
+
+2) Install the necessary packages:
 	pip install opencv-python
 	pip install imutils
+	pip install flask
 
-3) To run the drawing program, make sure you have all the button icons, buttons.py, and drawing_program.py in the same folder, and run drawing_program.py.
+3) In the installed directory, run: python CVpaint.py
 
-4) Calibration takes pixel from the center of the circle. To properly calibrate, the colored wand must cover the center of the circle. Better lighting gives better results.
-
-Licensing?
+4) Go to http://127.0.0.1:5000/. You will see the website for the project. The website includes instructions on how to use the drawing program itself. Click Start on the top navigation bar to begin.
 
 Want to contribute or have questions? E-mail cwierzbanowski@olin.edu with ideas and additions.
