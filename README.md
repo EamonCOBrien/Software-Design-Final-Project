@@ -4,7 +4,7 @@ CVPaint is a web app that uses openCV to allow a user to draw on their computer 
 
 Authors: Eamon O'Brien, Gail Romer, Cali Wierzbanowski
 
-Usage:
+## Instructions:
 
 CVPaint runs on a browser, hosted on your device. Follow these steps to access it.
 
