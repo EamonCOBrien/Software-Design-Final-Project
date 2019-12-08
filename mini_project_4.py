@@ -23,15 +23,17 @@ class Model:
         self.current_path = os.path.dirname(__file__)
         self.line_points = []
         self.rectangle_points = []
-        self.circle_points = []
+        self.ellipse_points = []
         self.cursor_1 = ()
         self.cursor_2 = ()
         self.pen_size = 7
         self.eraser_size = 8
-        # self.line_colors = {'black' : (0,0,0), 'red' : (0,0,255), 'green' : (0,255,0), 'blue' : (255,0,0), 'grey' : (190,190,190)}
-        self.line_color = (0,0,0)
+        self.line_color = (0,0,0) # the drawing color starts as black
         self.tool = 'calibration color 1'
         self.shape_started = False
+
+        # All the buttons in the interface initialized here.
+
         self.clear = Clear_Button(20,20,'Clear.png',50, self)
         self.erase = Erase_Button(160,20,'Erase.png',50, self)
         self.pen = Pen_Button(90,20,'Pen.png',50,self)
@@ -49,8 +51,8 @@ class Model:
 
     def check_buttons(self, cursor):
         """
-        Add the current position of the cursor to points and checks if it is in
-        the area of any of the buttons.
+        Just tells all of the buttons currently displayed to check if the cursor
+        is over them.
         """
         if self.tool == 'thickness':
             self.draw_thin.check_pressed(cursor)
@@ -58,9 +60,6 @@ class Model:
             self.draw_thick.check_pressed(cursor)
         elif self.tool == 'color_slider':
             self.color_slider.check_pressed(cursor)
-            # if self.color_slider.pressed:
-            #     # print(self.color_slider.selected)
-                # self.color_choice.update(self.color_slider.selected)
             self.color_choice.check_pressed(cursor)
         else:
             self.thicknessess.check_pressed(cursor)
@@ -81,6 +80,10 @@ class Controller:
         self.model = model
 
     def check_distance(self, point):
+        """
+        Checks if a point is within a certain distance of the last point in line_points.
+        This gets rid of false positives far away from where the cursor was last frame.
+        """
         if self.model.line_points:
             if self.model.line_points[-1]:
                 x1 = point[0]
@@ -95,7 +98,8 @@ class Controller:
     def detect_wand(self, lower, upper):
         """
         Looks at the current frame, finds the largest contour of the target color,
-        and returns its center
+        and returns the center of that point, as well as the current color and
+        velocity of the cursor.
         """
         kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
         blurred = cv2.GaussianBlur(self.model.frame, (17, 17), 0)
@@ -143,7 +147,7 @@ class View:
     def show_rectangles(self):
         """
         Iterates through all the points in the list of where the target has been
-        and draws lines between them.
+        and draws rectangles between them.
         """
         for i in range(len(self.model.rectangle_points)):
             if i > 0 and self.model.rectangle_points[i-1] and self.model.rectangle_points[i]: # make sure both endpoints exist
@@ -152,13 +156,13 @@ class View:
 
     def show_circles(self):
         """
-        Iterates through all the points in the list of where the target has been
-        and draws lines between them.
+        Iterates through all tfhe points in the list of where the target has been
+        and draws ellipses between them.
         """
-        for i in range(len(self.model.circle_points)):
-            if i > 0 and self.model.circle_points[i-1] and self.model.circle_points[i]: # make sure both endpoints exist
-                if self.model.circle_points[i-1][2]:
-                    cv2.circle(self.model.frame, self.model.circle_points[i-1][0:2], self.model.circle_points[i], self.model.circle_points[i-1][2], self.model.circle_points[i-1][-1])
+        for i in range(len(self.model.ellipse_points)):
+            if i > 0 and self.model.ellipse_points[i-1] and self.model.ellipse_points[i]: # make sure both endpoints exist
+                if self.model.ellipse_points[i-1][2]:
+                    cv2.circle(self.model.frame, self.model.ellipse_points[i-1][0:2], self.model.ellipse_points[i], self.model.ellipse_points[i-1][2], self.model.ellipse_points[i-1][-1])
 
     def remove_lines(self):
         if self.model.cursor_1 and self.model.line_points:
@@ -172,7 +176,7 @@ class View:
 
     def show_interface(self):
         """
-        Calls the display function of all the buttons.
+        Calls the display function of all the buttons currently in the interface
         """
         if self.model.tool != 'calibration color 1' and self.model.tool != 'calibration color 2':
             if self.model.tool == 'thickness':
@@ -196,6 +200,10 @@ class View:
                 self.model.rectangle.display(self.model.frame)
 
     def show_cursor(self):
+        """
+        Shows a circle on the screen where the cursor is. The circle matches the current thickness
+        and color of the cursor. If the current tool is erase, the circle is grey instead.
+        """
         if self.model.tool == 'erase':
             if self.model.cursor_1: #drawing cursor
                 cv2.circle(self.model.frame, ((self.model.cursor_1[0]),(self.model.cursor_1[1])),self.model.pen_size,(190,190,190), thickness = 2)
@@ -208,11 +216,15 @@ class View:
                 cv2.circle(self.model.frame, ((self.model.cursor_2[0]),(self.model.cursor_2[1])),self.model.pen_size,self.model.line_color, thickness = 2)
 
 def process_frame(model, controller, view):
+    """
+    This function finds the cursors, executes what current tool needs to happen,
+    shows all the buttons, and draws on the frame.
+    """
     model.frame = cv2.flip(model.frame,1) # reverse the frame so people aren't confused
-    model.cursor_1 = controller.detect_wand(model.lower_color_1, model.upper_color_1)
+    model.cursor_1 = controller.detect_wand(model.lower_color_1, model.upper_color_1) # find both cursors
     model.cursor_2 = controller.detect_wand(model.lower_color_2, model.upper_color_2)
 
-    if model.tool == 'calibration color 1' or model.tool =='calibration color 2':
+    if model.tool == 'calibration color 1' or model.tool =='calibration color 2': # all this code only needs to run if the program is currently calibrating
         model.elapsed_time = time.time() - model.calibration_start
         if model.elapsed_time < model.calibration_time:
             cv2.putText(model.frame,'Place '+ model.tool + ' in center:' + str(int(model.calibration_time - model.elapsed_time)),(30,30),cv2.FONT_HERSHEY_DUPLEX,1,(255, 255, 255))
@@ -234,7 +246,7 @@ def process_frame(model, controller, view):
                 model.tool = 'draw'
 
     elif model.tool == 'draw':
-        model.line_points.append(model.cursor_1)
+        model.line_points.append(model.cursor_1) # if the program is drawing, it simply needs to add to the list of points to be drawn.
 
     elif model.tool == 'erase':
         view.remove_lines()
@@ -254,17 +266,17 @@ def process_frame(model, controller, view):
 
     elif model.tool == 'circle_1':
         if model.cursor_1:
-            model.circle_points.append(model.cursor_1)
+            model.ellipse_points.append(model.cursor_1)
             model.tool = 'circle_2'
 
     elif model.tool == 'circle_2':
         if model.cursor_1:
-            radius = int(((model.circle_points[-1][0]-model.cursor_1[0])**2 + (model.circle_points[-1][1]-model.cursor_1[1])**2)**(1/2))
-            cv2.circle(model.frame, model.circle_points[-1][0:2], radius, model.circle_points[-1][2], model.circle_points[-1][-1])
+            radius = int(((model.ellipse_points[-1][0]-model.cursor_1[0])**2 + (model.ellipse_points[-1][1]-model.cursor_1[1])**2)**(1/2))
+            cv2.circle(model.frame, model.ellipse_points[-1][0:2], radius, model.ellipse_points[-1][2], model.ellipse_points[-1][-1])
         elif model.cursor_2:
-            radius = int(((model.circle_points[-1][0]-model.cursor_2[0])**2 + (model.circle_points[-1][1]-model.cursor_2[1])**2)**(1/2))
-            model.circle_points.append(radius)
-            model.circle_points.append(False)
+            radius = int(((model.ellipse_points[-1][0]-model.cursor_2[0])**2 + (model.ellipse_points[-1][1]-model.cursor_2[1])**2)**(1/2))
+            model.ellipse_points.append(radius)
+            model.ellipse_points.append(False)
             model.tool = 'circle_1'
 
     model.check_buttons(model.cursor_2)
@@ -277,6 +289,11 @@ def process_frame(model, controller, view):
     view.show_cursor()
 
 def main_loop():
+    """
+    If this script is run directly, this loop takes care of making a window for the
+    program and initializing everything. If the program is being run as a web app,
+    this function is not used.
+    """
     model = Model()
     view = View(model)
     controller = Controller(model)
@@ -284,7 +301,7 @@ def main_loop():
     model.calibration_start = time.time()
     while True:
         _, model.frame = cap.read() # get a frame from the camera
-        process_frame(model,controller,view)
+        process_frame(model,controller,view) # this is where all the work is done.
         cv2.imshow('art!',model.frame)
         if cv2.waitKey(1) & 0xFF == ord('q') or model.tool == 'exit':
             cap.release()
@@ -292,4 +309,5 @@ def main_loop():
             break
 
 if __name__ == '__main__':
+    # again, this doesn't run unless this script is run directly, not from the browser
     main_loop()
