@@ -33,8 +33,8 @@ class Model:
         self.tool = 'calibration color 1'
         self.shape_started = False
         self.clear = Clear_Button(20,20,'Clear.png',50, self)
-        self.erase = Erase_Button(90,20,'Erase.png',50, self)
-        self.pen = Pen_Button(160,20,'Pen.png',50,self)
+        self.erase = Erase_Button(160,20,'Erase.png',50, self)
+        self.pen = Pen_Button(90,20,'Pen.png',50,self)
         self.thicknessess = Thicknessess_Button(230,20,'Thickness.png',50, self, self.pen_size)
         self.color = Color_Button(300,20,'Color.png',50, self)
         self.rectangle = Rectangle_Button(370,20,'Rectangle.png',50,self)
@@ -220,8 +220,8 @@ def process_frame(model, controller, view):
             cv2.circle(model.frame, (int(model.frame.shape[1]/2), int(model.frame.shape[0]/2)), 55,(0,0,0), thickness = 3)
         elif model.elapsed_time > model.calibration_time:
             kernel = np.ones((15, 15), 'uint8') # make a kernel for blurring
-            frame = cv2.dilate(model.frame, kernel) # blur the frame to average out the value in the circle
-            frame = cv2.GaussianBlur(model.frame, (17, 17), 0)
+            model.frame = cv2.dilate(model.frame, kernel) # blur the frame to average out the value in the circle
+            model.frame = cv2.GaussianBlur(model.frame, (17, 17), 0)
             hsv_frame = cv2.cvtColor(model.frame, cv2.COLOR_BGR2HSV)
             pixel = hsv_frame[int(model.frame.shape[0]/2), int(model.frame.shape[1]/2)] # grab the pixel from the center of the calibration circle
             if model.tool == 'calibration color 1':
