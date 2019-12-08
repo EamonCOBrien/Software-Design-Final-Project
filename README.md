@@ -1,6 +1,6 @@
 # Software-Design-Final-Project
 
-CVPaint is a web app that uses openCV to allow a user to "paint" on their computer screen through their camera.
+CVPaint is a web app that uses openCV to allow a user to draw on their computer screen through their camera.
 
 Authors: Eamon O'Brien, Gail Romer, Cali Wierzbanowski
 
