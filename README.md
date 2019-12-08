@@ -15,7 +15,7 @@ CVPaint runs on a browser, hosted on your device. Follow these steps to access i
 	pip install imutils
 	pip install flask
 
-3) In the terminal, run: python CVpaint.py
+3) In the installed directory, run: python CVpaint.py
 
 4) Go to http://127.0.0.1:5000/. You will see the website for the project. The website includes instructions on how to use the drawing program itself. Click Start on the top navigation bar to begin.
 
