@@ -20,3 +20,5 @@ CVPaint runs on a browser, hosted on your device. Follow these steps to access i
 4) Go to http://127.0.0.1:5000/, you can you this by Ctrl+clicking the link in the command window, copying and pasting the link, or typing it into the address bar directly. You will see the website for the project. The How to Play page of the site includes instructions on how to use the drawing program itself, if you get stuck using a feature. Click Start on the top navigation bar to begin.
 
 Want to contribute or have questions? E-mail cwierzbanowski@olin.edu with ideas and additions.
+
+To view this project online https://drawing-program-demo.herokuapp.com/
