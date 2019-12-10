@@ -16,9 +16,9 @@ def home():
 def introduction():
     return render_template('intro.html')
 
-@app.route('/story')
-def story():
-    return render_template('story.html')
+# @app.route('/story')
+# def story():
+#     return render_template('story.html')
 
 @app.route('/rules')
 def rules():
@@ -33,21 +33,24 @@ def draw():
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(Camera()),
-        mimetype='multipart/x-mixed-replace; boundary=frame')
+        mimetype='multipart/x-mixed-replace; boundary=frame') # continuously get frames from the camera
 
-def gen(camera): # i think this is where we would run all of our original code
+def gen(camera):
     """Video streaming generator function."""
     while True:
         frame = camera.get_frame() # get the frame in binary from Opencv
         frame = np.frombuffer(frame, np.uint8) # turn the binary into an array
         frame = cv2.imdecode(frame, cv2.IMREAD_UNCHANGED) # turn the array into an image
-        model.frame = frame
+        model.frame = frame # give that frame to the object that keeps track of everything
         process_frame(model, controller, view) # run MP4 on the image
         frame = cv2.imencode('.jpg', model.frame)[1].tobytes() # turn the image back into binary
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') # send the binary to the web app
 
 if __name__ == '__main__':
+    """
+    All this function does is initialize everything we need for the web app to run.
+    """
     model = Model()
     view = View(model)
     controller = Controller(model)
