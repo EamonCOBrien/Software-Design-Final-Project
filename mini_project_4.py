@@ -165,6 +165,10 @@ class View:
                     cv2.circle(self.model.frame, self.model.ellipse_points[i-1][0:2], self.model.ellipse_points[i], self.model.ellipse_points[i-1][2], self.model.ellipse_points[i-1][-1])
 
     def remove_lines(self):
+        """
+        This is the function called by the eraser tool. It erases lines by removing points
+        from the line_points list if they are within a certain distance from the cursor.
+        """
         if self.model.cursor_1 and self.model.line_points:
             eraser_range_x = [i for i in range(int(self.model.cursor_1[0])-self.model.eraser_size, int(self.model.cursor_1[0])+self.model.eraser_size)]
             eraser_range_y = [i for i in range(int(self.model.cursor_1[1])-self.model.eraser_size, int(self.model.cursor_1[1])+self.model.eraser_size)]
