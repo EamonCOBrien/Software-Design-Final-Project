@@ -56,7 +56,7 @@ class Clear_Button(Button):
         self.model.line_points.clear()
         self.model.line_points.append(False)
         self.model.rectangle_points.clear()
-        self.model.circle_points.clear()
+        self.model.ellipse_points.clear()
 
 class Thicknessess_Button(Button):
     """
