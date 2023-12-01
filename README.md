@@ -8,7 +8,7 @@ Authors: Eamon O'Brien, Gail Romer, Cali Wierzbanowski
 
 CVPaint runs on a browser, hosted on your device. Follow these steps to access it.
 
-1) Clone the repository into a folder on your device: git clone https://github.com/EamonCOBrien/Software-Design-Final-Project.git
+1) Clone the repository into a folder on your device (open Terminal and paste in the command line): "git clone https://github.com/EamonCOBrien/Software-Design-Final-Project.git"
 
 2) Install the necessary packages:
 	pip install opencv-python
